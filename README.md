@@ -19,3 +19,9 @@ git submodule update --init --recursive
 ```
 
 The reference submodule supplies UART-ingestion evidence only; see [ADR 0001](docs/adr/0001-uart-reference-boundary.md).
+
+## Run the browser baseline
+
+Node 22.12+ or 24 LTS, then `npm ci` and `npm run dev`. Open http://127.0.0.1:5173 on the same computer. `npm test`, `npm run typecheck`, and `npm run build` validate the project; `npm run preview` serves a production build.
+
+The first baseline is explicitly labelled replay and is not live hardware acceptance. E owns `src/contracts/index.ts` (launch-v1.1); H implements `InputFacade` in `src/input/index.ts`. Source units are virtual mm with +X right, +Y up, +Z toward the viewer; raw yaw/pitch remain degrees until H maps them. All clocks use the injected monotonic performance clock.
