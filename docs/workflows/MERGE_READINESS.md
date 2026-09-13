@@ -52,3 +52,7 @@ Remote dev now preserves remote-main history; the local recovery branch preserve
 - Merge-tree simulations do not change working files; their conflicts are described above.
 - Prod `04fbf5f`: offline lockfile install succeeded; 14 test files / 157 tests passed; production build passed, including TypeScript checking, with the same bundle-size warning.
 - Documentation: `git diff --check` passed; new and changed relative Markdown links were checked for existing targets.
+
+## Publication handoff
+
+Configuration commit `ab86eb6` was pushed on `Cadastrophi_dev-prod-config`. Draft PR creation targeting dev failed with GitHub 403 “Resource not accessible by integration”; no PR was created. The available browser session is signed out. Continue through an authenticated repository session, open the configuration PR, resolve the questions, then complete the migration gate. No main deletion or production promotion occurred.
