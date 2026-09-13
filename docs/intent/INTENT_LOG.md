@@ -85,3 +85,14 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Out of scope:** Gameplay, scoring, UART protocol, controller mapping, camera behavior, and scene geometry.
 - **Constraints:** Preserve the existing information architecture and controls; use a single cool-neutral light theme with one restrained blue accent; retain keyboard/focus accessibility and reduced-motion behavior. Integrate after #33 because both tasks own the UI shell.
 - **Acceptance evidence:** DOM tests prove nullable information is omitted, full tests/typecheck/build pass, and a live browser preview verifies the white shell, left mode navigation, measurement pills, and narrow-desktop layout.
+
+## 2026-09-13 — Make award-track evidence discoverable
+
+- **Requested by:** Justin.
+- **Outcome:** Optimize README and documentation organization for Best example of Agentic Engineering and Best example of Computer Use, and suggest additional evidence that strengthens the submission.
+- **Scope:** README.md, docs/README.md, docs/showcase/**; append this entry to the intent log when applying.
+- **Boundaries:** Documentation only; preserve runtime layout, historical evidence and current governance. Do not invent judging criteria, computer-use recordings, hardware validation or measured productivity gains.
+- **Evidence:** Audited origin/main at 74363b6, linked E/H exchanges in issue #1, merged implementation and review PRs, handoffs and focused tests. Category names come from the user's screenshot.
+- **Coordination:** Isolated branch justin/judging-evidence; #37 owner explicitly acknowledged shared-log append and confirmed frozen runtime work; pitch task confirmed no file overlap. GitHub issue creation returned 403. Justin subsequently explicitly authorized applying and pushing all prepared documentation directly to main, overriding the issue-claim and PR requirements for this task.
+- **Validation:** Relative documentation links checked against current main; no runtime changes or new hardware tests.
+- **Handoff:** Add actual session evidence using docs/showcase/EVIDENCE_TEMPLATE.md; publish directly to main as explicitly requested; preserve unrelated local commits and working files.
