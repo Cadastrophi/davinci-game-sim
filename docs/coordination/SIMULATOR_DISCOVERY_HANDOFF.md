@@ -3,7 +3,7 @@
 - **Issue / PR:** GitHub issue and PR pending; repository web authentication was unavailable when this branch was prepared.
 - **Human owner / current agent:** Justin / Codex
 - **Requested outcome:** Preserve the complete simulator discovery and enable another agent to review it and generate two master prompts for concurrent GPT-6 Astra implementation on two computers.
-- **Branch and current commit:** `justin/simulator-discovery-brief`; commit filled in after commit creation.
+- **Branch and discovery commit:** `justin/simulator-discovery-brief` at `bfc919a` for the discovery content; branch HEAD may add coordination metadata only.
 - **Completed:** Product intent, hardware stream contract, Web Serial behavior, engine comparison, proposed stack ADR, exercises, architecture, risks, schedule, open decisions, two-agent ownership split, prompt acceptance checklist.
 - **Remaining:** Peer review; settle or preserve the six open product/hardware decisions; accept or revise ADR 0002; create two narrow implementation issues and branches; generate the two master prompts; implement and integrate the game.
 - **Files and interfaces touched:** `CONTEXT.md`; `docs/README.md`; `docs/PROJECT_INTENT.md`; `docs/intent/INTENT_LOG.md`; `docs/adr/README.md`; `docs/adr/0002-browser-native-prototype-stack.md`; `docs/specs/TELEOP_SIMULATOR_DISCOVERY.md`; `docs/coordination/ACTIVE_WORK.md`; this handoff.
