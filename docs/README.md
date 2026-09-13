@@ -27,5 +27,4 @@ The documentation is the shared memory for humans and agents. Update it in the s
 
 - `adr/README.md` — architectural decision records.
 - `references/UART_REFERENCE.md` — permitted use of the reference submodule.
-- `skills/INSTALLED_SKILLS.md` — provenance of project-local agent skills.
 - `agents/` — configuration consumed by Matt Pocock's engineering skills.

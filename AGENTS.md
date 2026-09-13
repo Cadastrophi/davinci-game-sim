@@ -7,8 +7,7 @@ This repository is developed primarily by autonomous agents acting for Justin an
 1. Read `CONTEXT.md`, `docs/README.md`, and `docs/PROJECT_INTENT.md`.
 2. Read `docs/coordination/ACTIVE_WORK.md`, then inspect open GitHub issues and pull requests. The remote tracker is authoritative; the file is a convenient local mirror.
 3. Read the ADR index and any ADR relevant to the files or subsystem being changed.
-4. Use the project-local skill `.agents/skills/coordinate-agentic-unity-work/` for any change that writes code, assets, project settings, documentation, branches, commits, pull requests, or merges.
-5. Load only the additional project-local skills relevant to the task. Skills live in `.agents/skills/`.
+4. Use applicable device-level skills for the task. Do not download or commit skill packages into this repository.
 
 ## Scope and intent
 
