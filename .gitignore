@@ -33,8 +33,9 @@ sysinfo.txt
 *.unitypackage
 *.app
 
-# Local agent scratch space (shared skills remain tracked)
+# Local agent state; reusable skills are installed at device scope
 .scratch/
+/.agents/skills/
 
 # Browser application
 node_modules/

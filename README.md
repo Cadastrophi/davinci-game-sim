@@ -62,7 +62,7 @@ Keeping input independent from rendering let agents work on each side of a share
 | [docs/showcase/](docs/showcase/) | Short evidence walkthrough and prioritized submission improvements. |
 | [docs/launch/](docs/launch/) / [docs/hardware/](docs/hardware/) | Accepted specification, demo instructions and hardware handoff. |
 | [docs/handoffs/](docs/handoffs/) / [docs/adr/](docs/adr/) | Agent delivery records and consequential decisions. |
-| [AGENTS.md](AGENTS.md) / [.agents/skills/](.agents/skills/) | Agent operating contract and reusable workflows. |
+| [AGENTS.md](AGENTS.md) | Agent operating contract; reusable skills are installed at device scope. |
 | [references/](references/) | Pinned upstream references, separate from application code. |
 
 Contributors: start with [AGENTS.md](AGENTS.md), [domain language](CONTEXT.md), and the [documentation index](docs/README.md). The active stack is Babylon.js, TypeScript and Vite; [ADR 0003](docs/adr/0003-browser-training-launch.md) explains the transition from the historical Unity plan.
