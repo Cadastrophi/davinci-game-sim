@@ -3,6 +3,7 @@ import {
   type CalibrationConfig, type ExerciseMode, type Source,
   type UiCommand, type UiFacade, type UiSnapshot,
 } from '../contracts';
+import { formatRawTelemetry } from './telemetry';
 import './styles.css';
 
 const MODES: readonly [ExerciseMode, string, string][] = [
@@ -70,7 +71,7 @@ export function createUi(
       <div class="training-rail-foot">Original virtual practice arena<br><span>Virtual measurements · roll unavailable</span></div>
     </aside>
     <section class="training-viewport" aria-label="Training status">
-      <header class="training-header"><div><div class="training-section-label">PRACTICE FIELD / VIRTUAL MM</div><h1 data-title>Free practice</h1></div><div class="training-state"><span class="training-status-dot"></span><span data-phase>Ready</span></div></header>
+      <header class="training-header"><div><div class="training-section-label">PRACTICE FIELD / VIRTUAL MM</div><h1 data-title>Free practice</h1></div><div class="training-header-status"><div class="training-live-input" aria-label="Live raw input stream"><span data-stream-label>MOCK STREAM</span><strong data-stream-position>X —&nbsp; Y —&nbsp; Z —</strong><small><span data-stream-angles>YAW —&nbsp; PITCH —</span><span data-stream-sequence>#—</span></small></div><div class="training-state"><span class="training-status-dot"></span><span data-phase>Ready</span></div></div></header>
       <div class="training-session"><span data-target>Explore at your pace</span><span data-direction>Virtual mapped direction</span></div>
       <div class="training-feedback" role="status" aria-live="polite"><span data-feedback>Choose an exercise to begin.</span></div>
       <div class="training-results" hidden><div class="training-section-label">SESSION COMPLETE</div><h2>Practice makes precise.</h2><p data-result-summary></p><button type="button" data-retry>Try again ↗</button></div>
@@ -122,7 +123,7 @@ export function createUi(
   listen('.training-brand', 'click', event => event.preventDefault());
   return {
     render(snapshot: UiSnapshot) {
-      const { exercise: e, input: { status, control }, applied } = snapshot;
+      const { exercise: e, input: { status, control, raw }, applied } = snapshot;
       currentMode = e.mode;
       text('[data-title]', MODES.find(([mode]) => mode === e.mode)?.[1] ?? 'Practice');
       shell.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach(button => button.setAttribute('aria-current', button.dataset.mode === e.mode ? 'true' : 'false'));
@@ -134,6 +135,11 @@ export function createUi(
       const feedback = explainPause(status.error || control.pauseReason || e.pauseReason, control.fresh) || (snapshot.cameraAdjusting ? 'Camera adjustment · tool world pose is frozen' : e.feedback);
       text('[data-feedback]', feedback || 'Move the instrument with your selected input.');
       get('.training-feedback').dataset.warning = String(paused || Boolean(status.error) || applied.mismatch);
+      const stream = formatRawTelemetry(status.source, raw?.source === status.source ? raw : null);
+      text('[data-stream-label]', stream.label);
+      text('[data-stream-position]', stream.position);
+      text('[data-stream-angles]', stream.angles);
+      text('[data-stream-sequence]', stream.sequence);
       const incision = e.mode === 'incision' ? snapshot.incision : null;
       const dwellTarget = e.target?.dwellMs ?? 500;
       get<HTMLProgressElement>('[data-dwell]').value = dwellTarget > 0 ? Math.min(1, e.dwellMs / dwellTarget) : 0;

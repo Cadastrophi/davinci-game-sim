@@ -12,7 +12,7 @@ Hold Shift to reposition/recenter the controller while both camera and instrumen
 
 Select a drill to start. Reach requires a continuous 0.5-second hold within 10 mm; alignment also requires direction within 10 degrees. Obstacle navigation blocks the short blade against protected volumes and counts one contact episode until separation. Camera navigation requires a new camera adjustment of at least 5 mm requested displacement before each target acquisition. Protected volumes are non-cuttable.
 
-Calibrate / set center anchors the selected source at the current applied tool pose. Resume also rebases after a pause. Reset clears the current exercise and restores the default camera, while preserving the applied tool pose. If an obstacle drill cannot start because the blade overlaps a protected volume, use Free practice to move clear and retry.
+Hold the controller in its neutral position, then choose Calibrate / set center. That raw pose becomes the simulator home position. Resume rebases after a pause without moving the instrument. Reset clears the current exercise and returns both the instrument and camera home. If an obstacle drill cannot start because the blade overlaps a protected volume, Reset or use Free practice to move clear and retry.
 
 A stale stream, source change, blur or hidden page pauses control. Fresh data alone never resumes it; choose Resume or calibrate deliberately. Background-tab throttling can trigger this pause. Intentional Space adjustments count elapsed time; outages and explicit pauses do not.
 
@@ -28,4 +28,4 @@ For a mock demonstration from a fresh page: select Constrained incision, click t
 
 On the controller computer, choose Serial, then Connect device in a Web Serial-capable browser. Select the actual port. Defaults are 115200 baud, 8 data bits, no parity, one stop bit and no flow control; confirm framing on the actual device. Center the controller, select the correct axis permutation/signs/gains, then calibrate. Device input is receive-only.
 
-Telemetry reports the actual input provenance; the selected setup source can differ while waiting for connection. Direction remains virtual-mapped unless independently validated; roll is unavailable. See [H's checklist](../hardware/INPUT_HANDOFF.md) for live acceptance. Automated fixtures and browser mock checks are not live-device evidence.
+The top-right stream panel reports the live raw XYZ, yaw/pitch and packet sequence; it is labelled UART STREAM for the serial source. The bottom telemetry bar reports input provenance, rate, age and validity; the selected setup source can differ while waiting for connection. Direction remains virtual-mapped unless independently validated; roll is unavailable. See [H's checklist](../hardware/INPUT_HANDOFF.md) for live acceptance. Automated fixtures and browser mock checks are not live-device evidence.

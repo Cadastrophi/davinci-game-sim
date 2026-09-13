@@ -51,3 +51,7 @@ The sixth mode is enabled after independent training, scene and UI reviews. Comb
 ## Shift recenter follow-up (#31)
 
 User requested controller-only recenter on Shift. E app routing freezes camera and applied tool pose until release and rebases through the unchanged H input facade. Shift interrupts Space; stale/disconnected/focus-loss interruptions require explicit resume. Recenter pauses dwell, cutting and exercise time. Independent review found no blockers; all 168 tests and production build pass, including 11 focused real-facade/key-routing cases. This does not assert live hardware verification.
+
+## Home controls and stream visibility follow-up (#33)
+
+Set Center now maps the raw pose held by the operator to the simulator's fixed home pose, and Reset returns both instrument and camera home. Pause/Resume commands render synchronously so the opposite button becomes available in the same click turn. A compact top-right panel exposes raw XYZ, yaw/pitch and sequence, labelled UART STREAM for serial input. Automated coverage includes real input/training/controller composition and pure telemetry formatting; the full 173-test suite, typecheck and production build pass. Chrome mock verification confirmed the live panel and immediate Pause/Resume transitions. Live hardware behavior remains to be checked on the controller computer.
