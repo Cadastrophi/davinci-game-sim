@@ -105,3 +105,11 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - Evidence at start: remote main 61efa65, prod 04fbf5f, no dev; local main 64afb7d has two unique FOC-reference commits and is 25 behind remote main. Preserve all local work.
 - Decisions: dev is the integration branch; prod retains the current release until a reviewed promotion. Historical records remain evidence and cannot impose obsolete ownership/deadline gates.
 - Completion evidence and unresolved release questions: docs/workflows/MERGE_READINESS.md. New behavioral tests wait for user-confirmed public seams under the TDD skill.
+
+
+## 2026-09-13 — Confirm stabilization decisions and CI delivery
+
+- Hold production feature promotion until hardware verification; no hardware is currently available. Keep pitchSign +1 and defer first-person navigation. No new behavioral test seams are approved.
+- Remove the two local-only FOC-reference commits from active local branch history without modifying the FOC submodule checkout or upstream repository. Do not garbage-collect unrelated history.
+- Add automated lockfile install, existing tests, typecheck/build and downloadable artifacts for dev/prod pushes and PRs. No deployment destination is selected; deployment remains on hold with hardware acceptance.
+- Close obsolete issue #1 as not planned/superseded. Validate the configuration and report remaining main-retirement conditions.

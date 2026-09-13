@@ -1,6 +1,14 @@
 # Merge readiness — 2026-09-13
 
-## Decision
+## Confirmed decisions (supersede the initial questions below)
+
+Justin holds production feature promotion for hardware verification, keeps pitch +1, defers first-person navigation and has not approved new behavioral test seams. Hardware is unavailable. CI test/build and downloadable artifacts are authorized for both dev and prod; deployment is not configured. Issue #1 is closed as not planned.
+
+The FOC-only local branch history was removed after full diff inspection proved there was no unrelated work in those commits. Local main now matches origin/main; the obsolete recovery and FOC feature refs are deleted. Primary checkout is dev. The FOC directory is retained untracked and internally clean at b1a857e; no upstream or submodule files changed. Normal reflogs were left intact.
+
+Chrome is authenticated and permits repository settings access, resolving the earlier browser blocker. The connector still denies writes. Current migration validation follows in the final handoff.
+
+## Initial audit decision (historical)
 
 Configuration is prepared for review; do not promote dev to prod or delete main until the questions and migration gates below are resolved. This audit covers branches, open issues, integration conflicts, workflow configuration and existing automated checks; it is not a full clinical, hardware or security audit.
 

@@ -29,8 +29,16 @@ All conditions must be verified before deleting remote or local main:
 
 - Remote dev exists and contains the complete remote-main history; prod exists at an identified, recoverable release.
 - GitHub's default branch is dev. Inspect branch protections/rulesets, PR bases and deployment integrations; migrate any main-specific settings. Report unavailable settings rather than assuming they are correct.
-- Every commit unique to local main is integrated or preserved under a named recovery ref. Preserve dirty worktrees and files.
+- Every commit unique to local main is integrated, preserved or explicitly rejected by the user. Preserve dirty worktrees and submodule files.
 - Feature/release PRs and merge-readiness questions have been reviewed; no remaining consumer requires main.
 - Fetch and re-check SHAs immediately before deletion. Switch the primary working checkout away from main safely. Retain a recovery ref for the old tip.
 
 See [merge readiness](MERGE_READINESS.md) for the current audit and unresolved decisions.
+
+## Automated delivery checks
+
+`.github/workflows/ci.yml` runs existing tests and production builds on dev/prod pushes and PRs targeting either branch. It uses Node 24.14.1, a lockfile install, read-only repository permissions and no submodule checkout. Each successful run uploads dist as a 14-day artifact tied to the tested SHA. Configure `Test and build` as the required status check after its first successful run.
+
+Production feature promotion and deployment are on hold pending hardware verification. CI builds are downloadable candidates, not hardware acceptance or an automatic deployment. No hosting destination or deployment credentials are configured by this change. A CI-only PR into prod may proceed without promoting dev application changes.
+
+Action sources: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node), [upload-artifact](https://github.com/actions/upload-artifact).
