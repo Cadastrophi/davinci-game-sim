@@ -1,70 +1,43 @@
-# Merge readiness — 2026-09-13
+# Configuration validation — 2026-09-13
 
-## Confirmed decisions (supersede the initial questions below)
+## Current decisions
 
-Justin holds production feature promotion for hardware verification, keeps pitch +1, defers first-person navigation and has not approved new behavioral test seams. Hardware is unavailable. CI test/build and downloadable artifacts are authorized for both dev and prod; deployment is not configured. Issue #1 is closed as not planned.
+- Hold production application promotion until hardware verification. Hardware is currently unavailable.
+- Keep pitchSign +1. Issue #35 remains open for future device evidence.
+- Defer first-person navigation (#37); none of its scene changes are in dev or prod.
+- Add no new behavioral tests until public test boundaries are agreed. Existing mock tests still run.
+- Issue #1 is closed as not planned; its two-agent delivery model is superseded.
+- Remove FOC-only local commits from active branch history; leave reference files and upstream untouched.
 
-The FOC-only local branch history was removed after full diff inspection proved there was no unrelated work in those commits. Local main now matches origin/main; the obsolete recovery and FOC feature refs are deleted. Primary checkout is dev. The FOC directory is retained untracked and internally clean at b1a857e; no upstream or submodule files changed. Normal reflogs were left intact.
+## Delivered configuration
 
-Chrome is authenticated and permits repository settings access, resolving the earlier browser blocker. The connector still denies writes. Current migration validation follows in the final handoff.
+- [PR #41](https://github.com/Cadastrophi/davinci-game-sim/pull/41) merged dev workflow/intent cleanup and CI at a555695.
+- [PR #42](https://github.com/Cadastrophi/davinci-game-sim/pull/42) merged CI only into prod at 1c61413. No dev application changes were promoted.
+- GitHub default branch and local origin/HEAD are dev. The primary checkout is on dev.
+- Active ruleset `dev-prod-ci` (23181190) targets exactly dev and prod: require a PR, an up-to-date `Test and build` check, prevent force pushes and deletions. No bypass actors and no external approval count requirement.
+- CI performs a locked install, existing tests, typecheck/build, and a downloadable 14-day artifact. It runs on dev/prod pushes and PRs and supports manual dispatch. Submodules are not checked out. Actions are pinned to official commit SHAs.
+- Deployment is deliberately not configured. GitHub Pages is disabled; no deployment environments or webhooks are configured. Future hosting needs a destination and remains behind the hardware release hold.
+- Repository-local skills remain removed, preserving the separate device-scope maintenance on dev/prod. Current dev operating docs retain intent, validation, review and handoff requirements without concurrent-friend or hackathon gates.
 
-## Initial audit decision (historical)
+## Validation evidence
 
-Configuration is prepared for review; do not promote dev to prod or delete main until the questions and migration gates below are resolved. This audit covers branches, open issues, integration conflicts, workflow configuration and existing automated checks; it is not a full clinical, hardware or security audit.
+- Node 24.14.1 on macOS: dev 180 existing tests pass; prod 157 existing tests pass. Both typecheck and build successfully.
+- GitHub PR CI passed for both #41 and #42, including artifact upload.
+- Merged dev push CI [34764443590](https://github.com/Cadastrophi/davinci-game-sim/actions/runs/34764443590) passed.
+- Merged prod push CI [34764488189](https://github.com/Cadastrophi/davinci-game-sim/actions/runs/34764488189) passed.
+- Application paths, package/lockfile, Vite and TypeScript configuration are unchanged versus the original dev/prod baselines. The Babylon bundle-size warning remains; no runtime failure was found by these checks.
+- No live hardware acceptance is claimed. Simulated-input tests do not establish physical controller correctness.
 
-## Branch evidence
+## FOC cleanup
 
-| Ref | Audited SHA | Finding |
-| --- | --- | --- |
-| origin/main | 61efa65 | GitHub default at audit time |
-| origin/dev | 61efa65 | Created during this task from the complete remote-main history |
-| origin/prod | 04fbf5f | Six commits behind dev; ancestor of dev, so no textual promotion conflict |
-| local main | 64afb7d | Two unique commits, 25 behind remote main; FOC reference and intent entries |
-| recovery | 64afb7d | Local `Cadastrophi_recovery-local-main-64afb7d` preserves the local-main tip |
+Full inspection showed local commits 4c533bc and 64afb7d contained only the FOC registration and associated intent/coordination record. Local main now matches origin/main; the FOC feature and temporary recovery branches were removed. Normal reflogs were not purged. The FOC checkout remains untracked, internally clean, and at b1a857e3bc9985f3f8a7deab6ec1876dd57b7017. No FOC files or upstream commits were changed.
 
-Prod lacks Shift recenter (#32), home controls/telemetry (#36), local-first policy (#38), axis/default-gain correction (#40), white UI (#39), and showcase documentation. A clean merge does not establish hardware acceptance.
+## Main retirement
 
-The primary checkout remains on legacy local main with untracked dist/ and node_modules/. It is not the current runnable app checkout. The tested configuration checkout is `/private/tmp/davinci-dev-prod-config`; preserve the primary checkout until migration is complete.
+Main remains at 61efa65 and is fully contained in dev. Its default-branch role is migrated; no checked-in CI or configured deployment depends on it. Both new branch checks pass, and local-only FOC history has been removed from active refs. Hardware verification gates application promotion, not deletion of the redundant main branch.
 
-## Open issues and merge conflicts
+The user requested validation and an update on when main can be deleted. After this final handoff is merged, main can be retired following a fresh remote/PR check. Leave it intact for this status update. Historical documents and old feature worktree upstreams may still name main; new work starts from dev, and an old task must refresh its base before continuing.
 
-- [#1: two-agent delivery plan](https://github.com/Cadastrophi/davinci-game-sim/issues/1): its coordination model is superseded by the current request. Recommend closing as superseded after preserving research links, rather than claiming every historical acceptance item was completed.
-- [#35: physical controller mapping](https://github.com/Cadastrophi/davinci-game-sim/issues/35): partially implemented. [PR #40](https://github.com/Cadastrophi/davinci-game-sim/pull/40) sets axisOrder `[1,2,0]` and translationGain `[1,1,3]`, but explicitly excludes angular mapping. `src/contracts/index.ts` still sets pitchSign `1`; the issue requests `-1`. Do not close as fully fixed.
-- [#37: first-person navigation](https://github.com/Cadastrophi/davinci-game-sim/issues/37): remote branch `Cadastrophi_first-person-navigation` at `1f20966` has unmerged scene code and a generated image. A merge-tree simulation against `61efa65` conflicts in `docs/coordination/ACTIVE_WORK.md` and `docs/intent/INTENT_LOG.md`, with no reported code conflict. Preserve both intent records when integrating. Its local worktree later moved to `798deef` while remote remained `1f20966`; this task did not make that change. Recheck before any integration and do not assume the local and published versions match.
-- Merging local main `64afb7d` into remote main also conflicts in `docs/intent/INTENT_LOG.md`. The unique FOC reference commits are preserved, not silently included in dev.
-- No open PRs were returned by GitHub at the audit checks. Historical feature branches often survive squash merges; commit ancestry alone is not evidence that all their code remains unmerged. Do not bulk-delete them or their worktrees.
+## Integration handoff
 
-## Configuration defects addressed in the proposed change
-
-The previous operating docs disagreed: AGENTS made issue claims/handshakes optional while Git and agent workflows still required them; templates still required acknowledgements; product/run-status docs still imposed old deadlines and two-master gates. The proposed documentation uses dev/prod consistently, removes these active requirements, preserves historical evidence, and retains intent, validation, PR review and handoff requirements. ADR 0004 records the change.
-
-## Remaining questions before merge
-
-1. **Release scope:** promote the six current dev commits to prod now, or keep prod at its older release while completing hardware validation? Recommendation: hold prod until its acceptance evidence is agreed.
-2. **Pitch:** keep `+1` pending a controller observation, or implement the `-1` requested by #35? Record a neutral-to-positive-pitch sample and expected virtual direction. Preserve the newer gain `[1,1,3]` unless explicitly changed.
-3. **First-person navigation:** include #37 in this release, or defer it while stabilizing the current app? Recommendation: defer unless it is part of the required release experience.
-4. **FOC reference:** integrate local-only commits `4c533bc`/`64afb7d`, or keep them archived under the recovery branch? Recommendation: preserve separately until reference access and intended use are confirmed.
-5. **Release acceptance:** is a localhost mock/demo release sufficient, or must the connected controller pass calibration, direction, recenter, reset, pause/resume and disconnect/reconnect checks before prod promotion? No current live-device pass is asserted.
-6. **Merge enforcement:** keep documented local checks only, or add CI for lockfile install, tests and build and require it on dev/prod PRs? There is no checked-in `.github/workflows` directory. Remote rulesets/protection/merge methods are unverified; the browser settings page is signed out and no repository-admin connector is available.
-7. **Tracker cleanup:** close #1 as superseded, retain #35 for pitch/hardware evidence, and retain or defer #37 according to release scope?
-8. **TDD seams:** confirm the public input facade and app controller as boundaries for behavioral fixes before adding tests. The invoked TDD skill requires explicit confirmation; existing tests can be run without adding new tests.
-
-## Main retirement gate
-
-Remote dev now preserves remote-main history; the local recovery branch preserves local-only work. Remaining steps: merge the reviewed workflow changes into dev, establish dev as GitHub default, inspect/migrate rulesets and any deployment/PR references, safely move the primary checkout to dev, and recheck all tips before deleting main. Main remains intact until these conditions hold. Branch creation alone is not a completed migration.
-
-## Validation
-
-- Baseline dev/main `61efa65`, Node v24.14.1, macOS: offline lockfile install succeeded; 19 test files / 180 tests passed; `npm run build` passed, including TypeScript checking.
-- Vite reports a main JS chunk of approximately 1,013 kB (247 kB gzip), above its 500 kB warning threshold. This is a performance follow-up, not a compile failure. No new runtime code or tests were added.
-- Merge-tree simulations do not change working files; their conflicts are described above.
-- Prod `04fbf5f`: offline lockfile install succeeded; 14 test files / 157 tests passed; production build passed, including TypeScript checking, with the same bundle-size warning.
-- Documentation: `git diff --check` passed; new and changed relative Markdown links were checked for existing targets.
-
-## Publication handoff
-
-Configuration commit `ab86eb6` was pushed on `Cadastrophi_dev-prod-config`. Draft PR creation targeting dev failed with GitHub 403 “Resource not accessible by integration”; no PR was created. The available browser session is signed out. Continue through an authenticated repository session, open the configuration PR, resolve the questions, then complete the migration gate. No main deletion or production promotion occurred.
-
-## Skill-maintenance integration
-
-Remote dev advanced to 76617d2 and prod to aef934e during this task, removing repository-local skills at Justin's request. The configuration branch incorporates that maintenance, keeps device-level skill guidance, and preserves both intent records. The CI-only prod branch starts from aef934e; application release content remains held.
+The final handoff branch merges the CI-only prod commit into dev so future dev-to-prod promotion shares its ancestry. Merge this PR with a merge commit, not squash. No application files change. Preserve intent records from both branches. Before future promotion, repeat device acceptance on the exact candidate SHA and record results.
