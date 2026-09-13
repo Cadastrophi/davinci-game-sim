@@ -1,31 +1,33 @@
-# Documentation index
+# Documentation map
 
-The documentation is the shared memory for humans and agents. Update it in the same pull request as the change it explains.
+Choose a route based on what you need. Historical launch records preserve delivery context; [AGENTS.md](../AGENTS.md) defines the current operating contract.
 
-## Product and domain
+## Evaluate the project
 
-- `PROJECT_INTENT.md` — goal, boundaries, success signals, and unresolved decisions.
-- `../CONTEXT.md` — stable domain language.
-- `intent/INTENT_LOG.md` — append-only record of requested outcomes and interpretation.
+- [Award-track evidence](showcase/README.md) — Agentic Engineering cases, Computer Use evidence status and submission improvements.
+- [Run the demo](launch/LOCAL_DEMO.md) — local setup, keyboard controls, drills and hardware connection.
+- [Hardware evidence](hardware/INPUT_HANDOFF.md) — input integration and device checks still to record.
+- [Evidence record template](showcase/EVIDENCE_TEMPLATE.md) — capture an actual agent/hardware session with provenance.
 
-## Accepted launch
+## Understand the product
 
-- [launch/SPEC.md](launch/SPEC.md) — accepted behavior and acceptance evidence.
-- [launch/CONTRACT.md](launch/CONTRACT.md) — cross-team interface blueprint.
-- [launch/COORDINATION.md](launch/COORDINATION.md) — ownership and integration gates.
-- [launch/RUN_STATUS.md](launch/RUN_STATUS.md) — current run deadline, delivery constraints and status.
-- [launch/README.md](launch/README.md) — immutable package provenance and master prompts.
+- [Project intent](PROJECT_INTENT.md) — accepted direction, boundaries and remaining validation.
+- [Domain language](../CONTEXT.md) — telemetry, requested/applied pose, rebase and measurement vocabulary.
+- [Accepted specification](launch/SPEC.md) — required behavior and acceptance evidence.
+- [Architecture decisions](adr/README.md) — durable choices, including the browser-stack transition.
 
-## Working together
+## Work on the implementation
 
-- `workflows/AGENT_WORKFLOW.md` — end-to-end task lifecycle and cross-agent handshake.
-- `workflows/GIT_WORKFLOW.md` — branches, commits, pull requests, conflicts, and merging.
-- `coordination/ACTIVE_WORK.md` — local mirror of active ownership; GitHub remains authoritative.
-- `coordination/HANDOFF_TEMPLATE.md` — required context when work changes hands.
+- [Agent operating contract](../AGENTS.md) — current local validation and PR integration rules.
+- [Shared interface contract](launch/CONTRACT.md) — input/experience boundary.
+- [Hardware handoff](hardware/INPUT_HANDOFF.md) — serial, mapping and source composition.
+- [Component handoffs](handoffs/) — scoped ownership, APIs, validation and delivery limitations.
+- [Intent log](intent/INTENT_LOG.md) — append-only record of requested outcomes.
+- [Handoff template](coordination/HANDOFF_TEMPLATE.md) — context to preserve when ownership changes.
 
-## Decisions and references
+## Recover the build history
 
-- `adr/README.md` — architectural decision records.
-- `references/UART_REFERENCE.md` — permitted use of the reference submodule.
-- `skills/INSTALLED_SKILLS.md` — provenance of project-local agent skills.
-- `agents/` — configuration consumed by Matt Pocock's engineering skills.
+- [Launch package](launch/README.md), [launch coordination](launch/COORDINATION.md) and [run status](launch/RUN_STATUS.md) — original prompts, delivery gates and deadline-era context.
+- [Agent workflow](workflows/AGENT_WORKFLOW.md), [Git workflow](workflows/GIT_WORKFLOW.md) and [active-work mirror](coordination/ACTIVE_WORK.md) — earlier coordination procedures and ownership snapshots. These retain issue/handshake requirements that were made optional by the current AGENTS.md; inspect live PRs for current work.
+- [UART reference boundary](references/UART_REFERENCE.md) — permitted upstream use.
+- [Installed skills](skills/INSTALLED_SKILLS.md) and [agent configuration](agents/) — workflow provenance and supporting configuration; historical Unity skills do not define the browser runtime.

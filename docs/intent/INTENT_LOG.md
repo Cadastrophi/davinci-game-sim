@@ -85,3 +85,23 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Out of scope:** Input/calibration contract changes, UI redesign, serial framing, new scoring or collision rules, arbitrary anatomy simulation, and changes to the incision table/slab or cutting geometry.
 - **Constraints:** WASD/QE and arrow-key input continues through the existing manual source and input facade used by serial-driven simulation. The first-person arm is presentation-only; applied world pose remains the authority for scoring and collision.
 - **Acceptance evidence:** Navigation modes enable the cavity/arm and hide the table instrument; arm movement follows applied pose; incision restores the table/slab; focused and full tests, typecheck/build, and browser walkthrough pass.
+
+## 2026-09-13 — White agent-manager training UI (#34)
+
+- **Requested by:** Justin.
+- **Outcome:** Replace the dark simulator chrome with a calm white desktop-tool interface that keeps game modes in a persistent left rail and presents only available measurements as compact pills.
+- **In scope:** UI composition and styles, responsive canvas framing, conditional rendering for nullable session/incision measurements, focused DOM tests, and browser preview.
+- **Out of scope:** Gameplay, scoring, UART protocol, controller mapping, camera behavior, and scene geometry.
+- **Constraints:** Preserve the existing information architecture and controls; use a single cool-neutral light theme with one restrained blue accent; retain keyboard/focus accessibility and reduced-motion behavior. Integrate after #33 because both tasks own the UI shell.
+- **Acceptance evidence:** DOM tests prove nullable information is omitted, full tests/typecheck/build pass, and a live browser preview verifies the white shell, left mode navigation, measurement pills, and narrow-desktop layout.
+
+## 2026-09-13 — Make award-track evidence discoverable
+
+- **Requested by:** Justin.
+- **Outcome:** Optimize README and documentation organization for Best example of Agentic Engineering and Best example of Computer Use, and suggest additional evidence that strengthens the submission.
+- **Scope:** README.md, docs/README.md, docs/showcase/**; append this entry to the intent log when applying.
+- **Boundaries:** Documentation only; preserve runtime layout, historical evidence and current governance. Do not invent judging criteria, computer-use recordings, hardware validation or measured productivity gains.
+- **Evidence:** Audited origin/main at 74363b6, linked E/H exchanges in issue #1, merged implementation and review PRs, handoffs and focused tests. Category names come from the user's screenshot.
+- **Coordination:** Isolated branch justin/judging-evidence; #37 owner explicitly acknowledged shared-log append and confirmed frozen runtime work; pitch task confirmed no file overlap. GitHub issue creation returned 403. Justin subsequently explicitly authorized applying and pushing all prepared documentation directly to main, overriding the issue-claim and PR requirements for this task.
+- **Validation:** Relative documentation links checked against current main; no runtime changes or new hardware tests.
+- **Handoff:** Add actual session evidence using docs/showcase/EVIDENCE_TEMPLATE.md; publish directly to main as explicitly requested; preserve unrelated local commits and working files.
