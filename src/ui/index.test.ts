@@ -13,7 +13,7 @@ const raw: RawPoseSample = {
   source: 'serial',
 };
 
-function snapshot(sample: RawPoseSample | null): UiSnapshot {
+function snapshot(sample: RawPoseSample | null, exercise: Partial<UiSnapshot['exercise']> = {}): UiSnapshot {
   const input: InputSnapshot = {
     raw: sample,
     control: {
@@ -43,7 +43,7 @@ function snapshot(sample: RawPoseSample | null): UiSnapshot {
   return {
     input,
     applied: { pose: INITIAL_TOOL_POSE, requestedPose: INITIAL_TOOL_POSE, contactIds: [], contactEpisodes: 0, mismatch: false },
-    exercise: { mode: 'free', phase: sample === null ? 'paused' : 'running', target: null, targetIndex: 0, targetCount: 0, positionErrorMm: null, directionErrorRad: null, dwellMs: 0, elapsedMs: 0, pathMm: 0, contactEpisodes: 0, steadinessMm: 0, pauseReason: sample === null ? 'missing-input' : null, feedback: '' },
+    exercise: { mode: 'free', phase: sample === null ? 'paused' : 'running', target: null, targetIndex: 0, targetCount: 0, positionErrorMm: null, directionErrorRad: null, dwellMs: 0, elapsedMs: 0, pathMm: 0, contactEpisodes: 0, steadinessMm: 0, pauseReason: sample === null ? 'missing-input' : null, feedback: '', ...exercise },
     obstacles: [],
     frameTimeMs: 16,
     cameraAdjusting: false,
@@ -52,7 +52,7 @@ function snapshot(sample: RawPoseSample | null): UiSnapshot {
 }
 
 describe('live input stream panel', () => {
-  it('renders serial values and an explicit unavailable state in the top-right header', () => {
+  it('renders current serial values and removes the panel when no live sample exists', () => {
     const root = document.createElement('div');
     const ui = createUi(root, vi.fn(), ['free']);
     const panel = root.querySelector<HTMLElement>('.training-live-input')!;
@@ -64,10 +64,66 @@ describe('live input stream panel', () => {
     expect(panel.querySelector('[data-stream-angles]')?.textContent).toBe('YAW -0.3°  PITCH 19.8°');
     expect(panel.querySelector('[data-stream-sequence]')?.textContent).toBe('#42');
 
-    ui.render(snapshot(null));
-    expect(panel.querySelector('[data-stream-position]')?.textContent).toBe('X —  Y —  Z —');
-    expect(panel.querySelector('[data-stream-angles]')?.textContent).toBe('YAW —  PITCH —');
-    expect(panel.querySelector('[data-stream-sequence]')?.textContent).toBe('#—');
+    const retained = snapshot(raw);
+    ui.render({
+      ...retained,
+      input: {
+        ...retained.input,
+        control: { ...retained.input.control, fresh: false, mode: 'paused', pauseReason: 'disconnected' },
+        status: { ...retained.input.status, connection: 'disconnected', sampleAgeMs: null },
+      },
+    });
+    expect(panel.hidden).toBe(true);
+    ui.dispose();
+  });
+});
+
+describe('conditional session measurements', () => {
+  it('omits unavailable measurements instead of rendering placeholder values', () => {
+    const root = document.createElement('div');
+    const ui = createUi(root, vi.fn(), ['free']);
+
+    ui.render(snapshot(raw));
+
+    expect(root.querySelector<HTMLElement>('[data-metric="position"]')?.hidden).toBe(true);
+    expect(root.querySelector<HTMLElement>('[data-metric="direction"]')?.hidden).toBe(true);
+    expect(root.querySelector<HTMLElement>('[data-metric="time"]')?.hidden).toBe(false);
+    expect(root.querySelector<HTMLElement>('[data-metric="path"]')?.hidden).toBe(false);
+    expect(root.querySelector('.training-metrics')?.textContent).not.toContain('—');
+    expect(root.textContent?.toLowerCase()).not.toContain('unavailable');
+    ui.dispose();
+  });
+
+  it('shows a measurement pill when its value becomes available', () => {
+    const root = document.createElement('div');
+    const ui = createUi(root, vi.fn(), ['reach']);
+
+    ui.render(snapshot(raw, { mode: 'reach', positionErrorMm: 4.25, directionErrorRad: Math.PI / 12 }));
+
+    const position = root.querySelector<HTMLElement>('[data-metric="position"]')!;
+    const direction = root.querySelector<HTMLElement>('[data-metric="direction"]')!;
+    expect(position.hidden).toBe(false);
+    expect(position.textContent).toContain('4.3 mm');
+    expect(direction.hidden).toBe(false);
+    expect(direction.textContent).toContain('15.0°');
+    ui.dispose();
+  });
+
+  it('omits unavailable incision details', () => {
+    const root = document.createElement('div');
+    const ui = createUi(root, vi.fn(), ['incision']);
+    const base = snapshot(raw, { mode: 'incision' });
+
+    ui.render({
+      ...base,
+      incision: {
+        seamStartMm: [-25, 18, 0], seamEndMm: [25, 18, 0], halfWidthMm: 15,
+        cutSegments: [false], coverage01: 0, contact: false, depthMm: null, deviationMm: null,
+      },
+    });
+
+    expect(root.querySelector<HTMLElement>('[data-direction]')?.hidden).toBe(true);
+    expect(root.textContent).not.toContain('—');
     ui.dispose();
   });
 });

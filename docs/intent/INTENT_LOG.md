@@ -66,3 +66,12 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Out of scope:** UART framing/protocol changes, serial transmit, gameplay or scene redesign, and changes to #32's Shift-held recenter semantics.
 - **Constraints:** Preserve the transport-independent input boundary and integrate after merged PR #32. A stale or missing sample must still prevent unsafe rebase/resume.
 - **Acceptance evidence:** Deterministic red/green integration tests for center/reset and rapid pause/resume, formatter/UI evidence for live raw values, full tests/typecheck/build, and browser verification.
+
+## 2026-09-13 — White agent-manager training UI (#34)
+
+- **Requested by:** Justin.
+- **Outcome:** Replace the dark simulator chrome with a calm white desktop-tool interface that keeps game modes in a persistent left rail and presents only available measurements as compact pills.
+- **In scope:** UI composition and styles, responsive canvas framing, conditional rendering for nullable session/incision measurements, focused DOM tests, and browser preview.
+- **Out of scope:** Gameplay, scoring, UART protocol, controller mapping, camera behavior, and scene geometry.
+- **Constraints:** Preserve the existing information architecture and controls; use a single cool-neutral light theme with one restrained blue accent; retain keyboard/focus accessibility and reduced-motion behavior. Integrate after #33 because both tasks own the UI shell.
+- **Acceptance evidence:** DOM tests prove nullable information is omitted, full tests/typecheck/build pass, and a live browser preview verifies the white shell, left mode navigation, measurement pills, and narrow-desktop layout.
