@@ -1,8 +1,19 @@
 import { INITIAL_TOOL_POSE, STALE_AFTER_MS } from '../contracts';
-import type { ControlFrame, ExerciseMode, ExerciseSnapshot, Target, ToolPose, TrainingFacade, TrainingState } from '../contracts';
+import type { ControlFrame, ExerciseMode, ExerciseSnapshot, Target, ToolPose, TrainingFacade, TrainingState, Vec3 } from '../contracts';
 import { createCollision, distance } from './collision';
 
 const REACH_TARGETS: readonly Target[] = [[0, 24, 0], [-30, 32, 20], [35, 18, -25], [0, 40, 30]].map((p, i) => ({ id: `reach-${i + 1}`, positionMm: [p[0]!, p[1]!, p[2]!] as const, direction: null, positionToleranceMm: 10, directionToleranceRad: Math.PI / 18, dwellMs: 500 }));
+// Modest virtual pointing offsets; these are not measured physical shaft orientations.
+const ALIGN_DIRECTIONS: readonly Vec3[] = [[0, 0, -1], [Math.sin(Math.PI / 12), 0, -Math.cos(Math.PI / 12)], [-Math.sin(Math.PI / 12), 0, -Math.cos(Math.PI / 12)], [0, Math.sin(Math.PI / 18), -Math.cos(Math.PI / 18)]];
+const ALIGN_TARGETS: readonly Target[] = REACH_TARGETS.map((target, i) => ({ ...target, id: `align-${i + 1}`, direction: ALIGN_DIRECTIONS[i]! }));
+/** Signed dot product: a reversed direction is pi radians away, never equivalent. */
+export function directionErrorRad(pose: ToolPose, target: Vec3 | null): number | null {
+  if (!target || !pose.direction || pose.directionKind === 'unavailable') return null;
+  const actualLength = Math.hypot(...pose.direction), targetLength = Math.hypot(...target);
+  if (!Number.isFinite(actualLength) || !Number.isFinite(targetLength) || actualLength < 1e-12 || targetLength < 1e-12) return null;
+  const dot = pose.direction.reduce((sum, value, i) => sum + value / actualLength * target[i]! / targetLength, 0);
+  return Math.acos(Math.max(-1, Math.min(1, dot)));
+}
 /** Pure training state. Input owns the deliberate resume latch; fresh active frames resume training.
  * reset preserves applied pose and returns to ready; start begins/retries the chosen mode.
  */
@@ -14,7 +25,8 @@ export function createTraining(initialPose: ToolPose = INITIAL_TOOL_POSE): Train
   let lastNow: number | null = null, previous: ControlFrame | null = null, previousInside = false;
   let lastIdentity = '', pauseReason: string | null = null, interrupted = false;
   let samples: ToolPose['positionMm'][] = [];
-  const target = (): Target | null => mode === 'reach' && phase !== 'completed' ? REACH_TARGETS[targetIndex] ?? null : null;
+  const targets = (): readonly Target[] => mode === 'reach' ? REACH_TARGETS : mode === 'align' ? ALIGN_TARGETS : [];
+  const target = (): Target | null => phase !== 'completed' ? targets()[targetIndex] ?? null : null;
   function reset(nowMs: number) {
     collision.reset(applied.pose); applied = collision.apply(applied.pose, []);
     phase = 'ready'; targetIndex = 0; dwellMs = elapsedMs = pathMm = 0;
@@ -22,7 +34,7 @@ export function createTraining(initialPose: ToolPose = INITIAL_TOOL_POSE): Train
   }
   return {
     start(nextMode, nowMs) {
-      if (nextMode !== 'free' && nextMode !== 'reach') throw new Error(`Training mode ${nextMode} is not implemented yet`);
+      if (nextMode !== 'free' && nextMode !== 'reach' && nextMode !== 'align') throw new Error(`Training mode ${nextMode} is not implemented yet`);
       mode = nextMode; reset(nowMs); phase = 'running';
     },
     reset,
@@ -57,7 +69,9 @@ export function createTraining(initialPose: ToolPose = INITIAL_TOOL_POSE): Train
       }
       const currentTarget = target();
       const error = currentTarget ? distance(applied.pose.positionMm, currentTarget.positionMm) : null;
-      const inside = phase === 'running' && fresh && frame.mode === 'tool' && error !== null && error <= currentTarget!.positionToleranceMm;
+      const angleError = directionErrorRad(applied.pose, currentTarget?.direction ?? null);
+      const directionInside = currentTarget?.direction == null || (angleError !== null && angleError <= currentTarget.directionToleranceRad);
+      const inside = directionInside && phase === 'running' && fresh && frame.mode === 'tool' && error !== null && error <= currentTarget!.positionToleranceMm;
       if (phase !== 'completed') {
         if (!inside || !previousInside || !continuous || revisionChanged || interrupted) { dwellMs = 0; samples = []; }
         else dwellMs += dt;
@@ -72,13 +86,18 @@ export function createTraining(initialPose: ToolPose = INITIAL_TOOL_POSE): Train
       let advanced = false;
       if (currentTarget && dwellMs >= currentTarget.dwellMs) {
         targetIndex++; advanced = true;
-        if (targetIndex === REACH_TARGETS.length) { phase = 'completed'; feedback = 'Practice complete'; dwellMs = currentTarget.dwellMs; }
+        if (targetIndex === targets().length) { phase = 'completed'; feedback = 'Practice complete'; dwellMs = currentTarget.dwellMs; }
         else { dwellMs = 0; samples = []; feedback = 'Target reached — continue'; }
       }
       previousInside = inside && !advanced;
       previous = structuredClone(frame); lastNow = nowMs; interrupted = false;
       const nextTarget = target();
-      return { applied: structuredClone(applied), obstacles: [], exercise: { mode, phase, target: nextTarget, targetIndex, targetCount: mode === 'reach' ? REACH_TARGETS.length : 0, positionErrorMm: nextTarget ? distance(applied.pose.positionMm, nextTarget.positionMm) : null, directionErrorRad: null, dwellMs, elapsedMs, pathMm, contactEpisodes: applied.contactEpisodes, steadinessMm, pauseReason, feedback: phase === 'paused' ? pauseReason ?? 'Paused' : feedback } };
+      if (mode === 'align' && phase !== 'completed') {
+        feedback = applied.pose.directionKind === 'unavailable' || applied.pose.direction === null
+          ? 'Direction unavailable — calibrate a virtual pointing mapping'
+          : `${applied.pose.directionKind === 'physical-validated' ? 'Pointing alignment' : 'Virtual direction'} — ${advanced ? 'target reached — continue' : inside ? 'hold position and direction' : 'match position and pointing direction'}`;
+      }
+      return { applied: structuredClone(applied), obstacles: [], exercise: { mode, phase, target: nextTarget, targetIndex, targetCount: targets().length, positionErrorMm: nextTarget ? distance(applied.pose.positionMm, nextTarget.positionMm) : null, directionErrorRad: directionErrorRad(applied.pose, nextTarget?.direction ?? null), dwellMs, elapsedMs, pathMm, contactEpisodes: applied.contactEpisodes, steadinessMm, pauseReason, feedback: phase === 'paused' ? pauseReason ?? 'Paused' : feedback } };
     },
   };
 }
