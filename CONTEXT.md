@@ -2,14 +2,16 @@
 
 ## Purpose
 
-Build a Unity-based simulator that approaches the visual clarity, environmental fidelity, and interaction quality associated with a da Vinci-style simulator experience. The current Unity prototype is considered too simple, particularly in graphics and presentation.
+Build a browser-accessible game that teaches the basics of teleoperation with a physical, single-hand pose controller and a virtual scalpel. The target experience takes functional inspiration from a da Vinci-style skills simulator while remaining an independently designed game.
 
 This document names the domain. Product intent and open questions live in `docs/PROJECT_INTENT.md`; durable technical decisions live in `docs/adr/`.
 
 ## Domain language
 
-- **Simulator**: the Unity application being built in this repository.
-- **Robot arm**: the physical or simulated mechanism controlled through commands.
+- **Simulator**: the browser application being built in this repository.
+- **Controller**: the fixed physical pose-sensing device connected through a USB-to-UART adapter.
+- **Virtual scalpel**: the single simulated end effector controlled by the controller pose.
+- **Software clutch**: the spacebar-held mode that freezes the virtual scalpel while the user repositions the controller, then rebases control without a jump.
 - **UART command**: a serialized command received through the UART-facing input boundary.
 - **Command parser**: the component that turns UART input into validated domain commands.
 - **Command ingestion**: transport-facing receipt, buffering, framing, parsing, validation, and dispatch.
@@ -23,4 +25,4 @@ UART transport details must terminate at an adapter boundary. Simulation and pre
 
 ## Current state
 
-Repository governance, documentation, and skills are being established. Game implementation is intentionally out of scope for this bootstrap.
+Repository governance is established. Product discovery for a five-hour browser prototype is captured in `docs/specs/TELEOP_SIMULATOR_DISCOVERY.md`; implementation has not started.

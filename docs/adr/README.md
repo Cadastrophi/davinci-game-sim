@@ -27,3 +27,4 @@ Naming: `NNNN-short-title.md`. Status values: `proposed`, `accepted`, `supersede
 ## Index
 
 - `0001-uart-reference-boundary.md` — the external repository is a UART parsing reference only.
+- `0002-browser-native-prototype-stack.md` — proposes a browser-native Babylon.js stack for the five-hour prototype.

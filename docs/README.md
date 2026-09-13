@@ -7,6 +7,7 @@ The documentation is the shared memory for humans and agents. Update it in the s
 - `PROJECT_INTENT.md` — goal, boundaries, success signals, and unresolved decisions.
 - `../CONTEXT.md` — stable domain language and architectural boundary.
 - `intent/INTENT_LOG.md` — append-only record of requested outcomes and interpretation.
+- `specs/TELEOP_SIMULATOR_DISCOVERY.md` — reviewed product brief, hardware contract, architecture recommendation, risks, and implementation handoff.
 
 ## Working together
 
