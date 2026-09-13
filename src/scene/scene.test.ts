@@ -68,4 +68,26 @@ describe('scene snapshot integration', () => {
     expect(scene.isDisposed).toBe(true);
     expect(() => facade.render(first)).not.toThrow();
   });
+
+  it('uses the single-arm first-person presentation only for navigation tasks', () => {
+    const { facade, scene } = setup();
+    const first = snapshot();
+    const navigation = { ...first, exercise: { ...first.exercise, mode: 'obstacle' as const } };
+    facade.render(navigation);
+    expect(scene.layers.find(layer => layer.name === 'navigation-anatomical-background')?.isEnabled).toBe(true);
+    expect(scene.getTransformNodeByName('first-person-instrument')?.isEnabled()).toBe(true);
+    expect(scene.getTransformNodeByName('applied-tool')?.isEnabled()).toBe(false);
+    expect(scene.getMeshByName('anatomical-practice-pad')?.isEnabled()).toBe(false);
+
+    const rig = scene.getTransformNodeByName('first-person-instrument')!;
+    const initial = rig.position.clone();
+    facade.render({ ...navigation, applied: { ...navigation.applied, pose: { ...INITIAL_TOOL_POSE, positionMm: [30, 38, -20] } } });
+    expect(Vector3.Distance(initial, rig.position)).toBeGreaterThan(1);
+
+    facade.render({ ...first, exercise: { ...first.exercise, mode: 'incision' } });
+    expect(scene.layers.find(layer => layer.name === 'navigation-anatomical-background')?.isEnabled).toBe(false);
+    expect(rig.isEnabled()).toBe(false);
+    expect(scene.getTransformNodeByName('applied-tool')?.isEnabled()).toBe(true);
+    expect(scene.getMeshByName('anatomical-practice-pad')?.isEnabled()).toBe(true);
+  });
 });
