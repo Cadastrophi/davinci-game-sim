@@ -76,3 +76,12 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Constraints:** Keep `main` integration-only, preserve isolated branches, require local validation and PR review, and resolve actual overlaps deliberately when they occur.
 - **Acceptance evidence:** Future agents can complete independent local work without creating or managing issues, while every change still passes through a reviewed, passing PR before merge.
 - **Supersedes:** The issue-claim, active-work mirror, and mandatory peer-handshake requirements in the 2026-09-13 repository governance bootstrap entry.
+
+## 2026-09-13 — White agent-manager training UI (#34)
+
+- **Requested by:** Justin.
+- **Outcome:** Replace the dark simulator chrome with a calm white desktop-tool interface that keeps game modes in a persistent left rail and presents only available measurements as compact pills.
+- **In scope:** UI composition and styles, responsive canvas framing, conditional rendering for nullable session/incision measurements, focused DOM tests, and browser preview.
+- **Out of scope:** Gameplay, scoring, UART protocol, controller mapping, camera behavior, and scene geometry.
+- **Constraints:** Preserve the existing information architecture and controls; use a single cool-neutral light theme with one restrained blue accent; retain keyboard/focus accessibility and reduced-motion behavior. Integrate after #33 because both tasks own the UI shell.
+- **Acceptance evidence:** DOM tests prove nullable information is omitted, full tests/typecheck/build pass, and a live browser preview verifies the white shell, left mode navigation, measurement pills, and narrow-desktop layout.

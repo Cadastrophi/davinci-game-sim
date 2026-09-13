@@ -1,7 +1,21 @@
-:root { font-family: system-ui, sans-serif; color: #e9eee8; background: #091014; font-synthesis: none; }
+:root { font-family: system-ui, sans-serif; color: #17191c; background: #fff; font-synthesis: none; }
 * { box-sizing: border-box; }
-html, body, #app { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+html, body, #app { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #fff; }
 #app { position: relative; }
-.practice-canvas { position: absolute; left: 260px; top: 0; width: calc(100% - 260px); height: calc(100% - 145px); display: block; outline: none; touch-action: none; }
+.practice-canvas {
+  position: absolute;
+  z-index: 1;
+  left: 264px;
+  top: 104px;
+  width: calc(100% - 280px);
+  height: calc(100% - 260px);
+  display: block;
+  border-radius: 16px;
+  outline: none;
+  touch-action: none;
+}
+.practice-canvas:focus-visible { outline: 2px solid #3468d4; outline-offset: 2px; }
 .practice-overlay { position: absolute; inset: 0; pointer-events: none; }
-@media (max-width: 780px) { .practice-canvas { left: 210px; width: calc(100% - 210px); } }
+@media (max-width: 780px) {
+  .practice-canvas { left: 222px; top: 94px; width: calc(100% - 234px); height: calc(100% - 258px); border-radius: 12px; }
+}
