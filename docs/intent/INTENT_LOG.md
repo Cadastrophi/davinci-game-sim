@@ -66,3 +66,13 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Out of scope:** UART framing/protocol changes, serial transmit, gameplay or scene redesign, and changes to #32's Shift-held recenter semantics.
 - **Constraints:** Preserve the transport-independent input boundary and integrate after merged PR #32. A stale or missing sample must still prevent unsafe rebase/resume.
 - **Acceptance evidence:** Deterministic red/green integration tests for center/reset and rapid pause/resume, formatter/UI evidence for live raw values, full tests/typecheck/build, and browser verification.
+
+## 2026-09-13 — Local-first agent integration
+
+- **Requested by:** Justin.
+- **Outcome:** Remove issue-management and peer-acknowledgement gates; each device works independently, validates locally, opens a PR, reviews it, and immediately merges acceptable work into `main`.
+- **In scope:** The root agent contract and its mandatory coordination skill.
+- **Out of scope:** Application behavior, existing issue history, and unrelated active work.
+- **Constraints:** Keep `main` integration-only, preserve isolated branches, require local validation and PR review, and resolve actual overlaps deliberately when they occur.
+- **Acceptance evidence:** Future agents can complete independent local work without creating or managing issues, while every change still passes through a reviewed, passing PR before merge.
+- **Supersedes:** The issue-claim, active-work mirror, and mandatory peer-handshake requirements in the 2026-09-13 repository governance bootstrap entry.

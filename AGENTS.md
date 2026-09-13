@@ -1,14 +1,13 @@
 # Agent operating contract
 
-This repository is developed primarily by autonomous agents acting for Justin and Jinyu. Humans are not expected to manage Git mechanics. Every agent owns the safety of its branch, the clarity of its intent, and coordination with the other active agent.
+This repository is developed primarily by autonomous agents acting for Justin and Jinyu. Humans are not expected to manage Git mechanics. Every agent owns the safety of its local work, the clarity of its intent, and the quality of what it merges.
 
 ## Read before acting
 
 1. Read `CONTEXT.md`, `docs/README.md`, and `docs/PROJECT_INTENT.md`.
-2. Read `docs/coordination/ACTIVE_WORK.md`, then inspect open GitHub issues and pull requests. The remote tracker is authoritative; the file is a convenient local mirror.
-3. Read the ADR index and any ADR relevant to the files or subsystem being changed.
-4. Use the project-local skill `.agents/skills/coordinate-agentic-unity-work/` for any change that writes code, assets, project settings, documentation, branches, commits, pull requests, or merges.
-5. Load only the additional project-local skills relevant to the task. Skills live in `.agents/skills/`.
+2. Read the ADR index and any ADR relevant to the files or subsystem being changed.
+3. Use the project-local skill `.agents/skills/coordinate-agentic-unity-work/` for any change that writes code, assets, project settings, documentation, branches, commits, pull requests, or merges.
+4. Load only the additional project-local skills relevant to the task. Skills live in `.agents/skills/`.
 
 ## Scope and intent
 
@@ -17,17 +16,15 @@ This repository is developed primarily by autonomous agents acting for Justin an
 - `references/idp-unity-simulation` is an upstream reference only for UART command parsing and ingestion. Never copy its gameplay, visuals, scene structure, or unrelated architecture into this project.
 - Do not invent product decisions. Record consequential choices as ADRs; record unresolved decisions in `docs/PROJECT_INTENT.md`.
 
-## Mandatory concurrency protocol
+## Local-first integration protocol
 
-- Never develop on `main` and never share a working branch with another agent.
-- Before editing, fetch/prune the remote, inspect open work, and claim a narrow task with expected files in the corresponding GitHub issue. Mirror the claim in `docs/coordination/ACTIVE_WORK.md` when practical.
-- Branches use `<github-login>_<branch-name>`, where `<github-login>` is the verified GitHub account used to push to `origin`. Follow the identity checks and examples in `docs/workflows/GIT_WORKFLOW.md#branch-naming`.
-- If another agent can be contacted directly, send it the issue, branch, intent, and expected file set. If paths or behavior overlap, wait for an acknowledgement and agree on ownership before writing. If direct contact is unavailable, use the GitHub issue/PR as the handshake and do not proceed on overlapping files without acknowledgement.
-- Re-check remote branches, issues, PRs, and overlapping diffs immediately before pushing and again before merging.
-- Integrate through a pull request. Update from `origin/main`, resolve conflicts on the feature branch, run proportionate validation, and prefer squash merge. Do not force-push shared branches, bypass required checks, or merge another agent's unreviewed work.
-- After merge, close the coordination claim, update the relevant docs/ADR, and remove the branch only when it is safe and recoverable from the merged commit.
-
-Detailed procedures are in `docs/workflows/AGENT_WORKFLOW.md` and `docs/workflows/GIT_WORKFLOW.md`.
+- Run implementation and proportionate validation locally on the machine doing the work. Local execution is the acceptance source of truth; do not depend on cloud tasks or remote execution to complete a change.
+- Never develop on `main` and never share a working branch with another agent. Start a unique local branch or worktree from current `origin/main`, using `<github-login>_<branch-name>` after verifying the push identity.
+- Assume work performed on the two devices is independent. GitHub issues, issue claims, the active-work mirror, and peer acknowledgements are not required to start or complete a task.
+- Preserve unrelated work. If actual overlap appears in changed paths, public interfaces, or merge conflicts, inspect both intents and resolve the overlap deliberately before integration.
+- After local validation passes, push the branch and open a pull request. Review the complete PR diff, required checks, and mergeability against the latest `origin/main`.
+- When the PR is correct, checks pass, and no unresolved overlap remains, squash-merge it into `main` immediately. Never bypass required checks, force-push another agent's branch, or merge changes that were not reviewed.
+- Confirm the merge is visible on `origin/main`. Remove the branch or worktree only when the merged commit remains recoverable.
 
 ## Change quality
 
@@ -37,14 +34,6 @@ Detailed procedures are in `docs/workflows/AGENT_WORKFLOW.md` and `docs/workflow
 - A task is not complete until intent, implementation, verification, and handoff are all legible to the other agent.
 
 ## Agent skills
-
-### Issue tracker
-
-Use GitHub issues and pull requests in the repository's `origin`; see `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-Use the shared triage vocabulary in `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
