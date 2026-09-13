@@ -105,3 +105,11 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Coordination:** Isolated branch justin/judging-evidence; #37 owner explicitly acknowledged shared-log append and confirmed frozen runtime work; pitch task confirmed no file overlap. GitHub issue creation returned 403. Justin subsequently explicitly authorized applying and pushing all prepared documentation directly to main, overriding the issue-claim and PR requirements for this task.
 - **Validation:** Relative documentation links checked against current main; no runtime changes or new hardware tests.
 - **Handoff:** Add actual session evidence using docs/showcase/EVIDENCE_TEMPLATE.md; publish directly to main as explicitly requested; preserve unrelated local commits and working files.
+
+## 2026-09-13 — Replace first-person arm placeholder (#37 follow-up)
+
+- **Requested by:** Justin after rejecting the first visual pass.
+- **Outcome:** Replace the crude placeholder with a properly articulated, original 3D surgical manipulator matching the broad silhouette and mechanical readability of the supplied references.
+- **In scope:** Camera-space Babylon.js model with tapered cannula/sleeve, articulated wrist, clevis rails, pivot hardware, paired curved jaws, tendons, and visible jaw serrations; retain applied-pose movement in the simulator.
+- **Out of scope:** Adding a second Three.js runtime, copying proprietary da Vinci geometry/assets, hardware-driven jaw opening, or changing collision/scoring/input contracts.
+- **Acceptance evidence:** Focused scene tests identify the new articulated parts, full tests/typecheck/build pass, and a browser walkthrough confirms a readable lower-right first-person silhouette while WASD moves it.

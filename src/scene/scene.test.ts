@@ -76,6 +76,11 @@ describe('scene snapshot integration', () => {
     facade.render(navigation);
     expect(scene.layers.find(layer => layer.name === 'navigation-anatomical-background')?.isEnabled).toBe(true);
     expect(scene.getTransformNodeByName('first-person-instrument')?.isEnabled()).toBe(true);
+    expect(scene.getMeshByName('first-person-cannula-sleeve')).not.toBeNull();
+    expect(scene.getMeshByName('first-person-wrist-ball')).not.toBeNull();
+    expect(scene.getMeshByName('first-person-clevis-left')).not.toBeNull();
+    expect(scene.getMeshByName('first-person-pivot-pin')).not.toBeNull();
+    expect(scene.getMeshByName('first-person-jaw-1-tooth-7')).not.toBeNull();
     expect(scene.getTransformNodeByName('applied-tool')?.isEnabled()).toBe(false);
     expect(scene.getMeshByName('anatomical-practice-pad')?.isEnabled()).toBe(false);
 
