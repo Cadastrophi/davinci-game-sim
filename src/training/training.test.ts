@@ -51,8 +51,8 @@ describe('reach timing', () => {
     t.start('free', 0); expect(t.step(frame(100), 100).exercise.target).toBeNull();
     t.reset(100); const state = t.step(frame(100), 100); expect(state.exercise.phase).toBe('ready'); expect(state.exercise.elapsedMs).toBe(0);
     t.start('align', 100); expect(t.step(frame(100), 100).exercise.targetCount).toBe(4);
-    expect(() => t.start('obstacle', 100)).toThrow('not implemented');
-    expect(() => t.start('camera', 100)).toThrow('not implemented');
+    t.start('obstacle', 100); expect(t.step(frame(100), 100).obstacles.length).toBe(2);
+    t.start('camera', 100); expect(t.step(frame(100), 100).exercise.targetCount).toBe(3);
   });
 });
 

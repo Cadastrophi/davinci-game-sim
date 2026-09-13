@@ -34,6 +34,18 @@ describe('continuous blade collision', () => {
     expect(blocked.mismatch).toBe(true); expect(blocked.contactIds).toEqual(['rotation']); expect(clearance(blocked.pose, box)).toBeGreaterThanOrEqual(0);
     expect(createCollision(a).apply(b, []).pose).toEqual(b);
   });
+  it('keeps unavailable pointing null at the boundary while blocking and retreating', () => {
+    const start: ToolPose = { positionMm: [-20, 0, 0], direction: null, directionKind: 'unavailable' };
+    const requested: ToolPose = { ...start, positionMm: [20, 0, 0] };
+    const c = createCollision(start);
+    for (let i = 0; i < 3; i++) {
+      const blocked = c.apply(requested, [wall]);
+      expect(blocked.mismatch).toBe(true); expect(blocked.pose.directionKind).toBe('unavailable');
+      expect(blocked.pose.direction).toBeNull(); expect(blocked.requestedPose.direction).toBeNull();
+      expect(clearance(blocked.pose, wall)).toBeGreaterThanOrEqual(0);
+    }
+    expect(c.apply(start, [wall]).pose).toEqual(start);
+  });
   it('allows a clear route and does not mutate caller poses', () => {
     const a = pose([-20, 0, 0]), b = pose([-10, 5, 0]), copy = structuredClone(a);
     const state = createCollision(a).apply(b, [wall]); expect(state.pose).toEqual(b); expect(state.mismatch).toBe(false); expect(a).toEqual(copy);
