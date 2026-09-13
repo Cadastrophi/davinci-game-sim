@@ -16,6 +16,12 @@ A stale stream, source change, blur or hidden page pauses control. Fresh data al
 
 Replay is a 40-second synthetic event sequence with truthful replay provenance. It ends with a stale-input pause. Select another source and Replay again to restart. It is not a recording from the physical controller.
 
+## Constrained incision
+
+The sixth mode opens an actual pre-tessellated tissue seam. It is a constrained demonstration with a fixed 50 mm seam, 20 segments and a 30 mm wide patch, not arbitrary mesh cutting or a clinical tissue model. Move the applied tip within 2 mm of the seam and 0–3 mm below its surface. Coverage comes from movement through that corridor; holding still does not cut. The two surface halves separate and curl outward where segments are cut, revealing recessed walls and interior.
+
+For a mock demonstration from a fresh page: select Constrained incision, click the field, and use A/D along the seam. The initial tip is on its center at the surface. Move toward each end to open the whole seam; use Q/E for depth. Protected volumes flank the patch and remain blocking. Coverage, depth and seam offset appear above the field. Reset restores uncut geometry while preserving the tip pose. Space, pause and stale input cannot cut or join a stroke across an interruption.
+
 ## Physical controller
 
 On the controller computer, choose Serial, then Connect device in a Web Serial-capable browser. Select the actual port. Defaults are 115200 baud, 8 data bits, no parity, one stop bit and no flow control; confirm framing on the actual device. Center the controller, select the correct axis permutation/signs/gains, then calibrate. Device input is receive-only.

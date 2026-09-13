@@ -34,7 +34,7 @@ input.resume(INITIAL_TOOL_POSE);
 const application = mountApplication(document.querySelector<HTMLElement>('#app')!, {
   input, onSource: sourceSelected, stopSource,
   pump: () => { keyboard?.tick(); provider?.tick(); },
-  availableModes: ['free', 'reach', 'align', 'obstacle', 'camera'],
+  availableModes: ['free', 'reach', 'align', 'obstacle', 'camera', 'incision'],
 });
 keyboard = attachManualControls(document.querySelector<HTMLCanvasElement>('.practice-canvas')!, () => manual);
 void application.controller.command({ type: 'start', mode: 'free' });
