@@ -27,3 +27,9 @@ No live hardware success, working modes or measured performance are asserted her
 Justin clarified during implementation that E and H should build concurrently on separate devices and that the user should not operate agent acknowledgements. E publishes the shared baseline contract; missing chat ACK does not block E development. E retains sole merging, independent reviews, exclusive ownership and interface compatibility validation at integration. This supersedes pre-writing/pre-worker ACK requirements for this run; consumers use the published merged baseline SHA.
 
 D0 merged in PR #5. P0 issue #4 establishes launch-v1.1 DTOs and a temporary labelled visual replay. The temporary provider has no calibration or serial behavior and is replaced when H's input facade lands.
+
+## Implementation progress
+
+H posted its own ACK in issue #1 and both lanes consume baseline `34baec7` / `launch-v1.1`. P0 merged through PR #6; original scene through PR #14 (`0ae4118`); free/reach and conservative collision through PR #15 (`9931063`). Dashboard PR #16 is reviewed; app composition #12 is in progress. Alignment #17 follows as its own reviewed increment.
+
+Synthetic checks cover clock-driven staleness, cumulative camera displacement, applied-pose transition arguments, continuous dwell, swept translation/rotation collision, terminal results and stale async connection intents. These are not live-device acceptance. H reported no attached ttyACM/ttyUSB device; hardware verification remains pending.

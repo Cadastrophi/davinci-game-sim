@@ -13,6 +13,22 @@ const MODES: readonly [ExerciseMode, string, string][] = [
   ['camera', 'Camera & navigation', 'Reposition your view'],
 ];
 
+function explainPause(reason: string | null, fresh: boolean): string | null {
+  if (!reason) return null;
+  const explanations: Record<string, string> = {
+    'stale-input': 'Input paused after a gap. Resume when ready.',
+    'awaiting-input': fresh ? 'Input is ready. Calibrate to set center, or Resume.' : 'Waiting for input from the selected source.',
+    'missing-input': 'Waiting for a fresh input sample.',
+    'disconnected': 'Input disconnected. Choose a source or connect a device.',
+    'uncalibrated': 'Center the controller, then select Calibrate / set center.',
+    'invalid-calibration': 'Check the axis mapping and gains, then calibrate again.',
+    'invalid-clock': 'Input timing was interrupted. Resume to set a fresh anchor.',
+    'wrong-mode': 'Resume practice before adjusting the camera.',
+    'calibration-changed': 'Calibration changed. Resume when ready.',
+  };
+  return explanations[reason] ?? reason;
+}
+
 /** Mount above the canvas. The left rail occupies 260px; see the handoff for layout. */
 export function createUi(
   root: HTMLElement,
@@ -72,8 +88,13 @@ export function createUi(
   const listen = (selector: string, event: string, handler: EventListener) => get(selector).addEventListener(event, handler, { signal: abort.signal });
   let currentMode: ExerciseMode = 'free';
   let previousSource: Source | undefined;
+  let selectedSource: Source = 'mock';
   shell.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach(button => button.addEventListener('click', () => dispatch({ type: 'start', mode: button.dataset.mode as ExerciseMode }), { signal: abort.signal }));
-  listen('[data-source]', 'change', () => dispatch({ type: 'source', source: get<HTMLSelectElement>('[data-source]').value as Source }));
+  listen('[data-source]', 'change', () => {
+    selectedSource = get<HTMLSelectElement>('[data-source]').value as Source;
+    get('[data-serial]').hidden = selectedSource !== 'serial';
+    dispatch({ type: 'source', source: selectedSource });
+  });
   listen('[data-trail]', 'change', () => dispatch({ type: 'trail', enabled: get<HTMLInputElement>('[data-trail]').checked }));
   for (const type of ['pause', 'resume', 'reset', 'disconnect'] as const) listen(`[data-command="${type}"]`, 'click', () => dispatch({ type }));
   listen('[data-command="connect"]', 'click', () => dispatch({ type: 'connect', settings: {
@@ -109,7 +130,7 @@ export function createUi(
       get('.training-state').dataset.state = paused ? 'paused' : status.connection;
       text('[data-target]', e.target ? `TARGET ${Math.min(e.targetIndex + 1, e.targetCount)} / ${e.targetCount}` : 'Explore at your pace');
       text('[data-direction]', applied.pose.directionKind === 'physical-validated' ? 'Physically validated direction · roll unavailable' : applied.pose.directionKind === 'virtual-mapped' ? 'Virtual mapped direction · roll unavailable' : 'Direction unavailable · roll unavailable');
-      const feedback = status.error || control.pauseReason || e.pauseReason || (snapshot.cameraAdjusting ? 'Camera adjustment · tool world pose is frozen' : e.feedback);
+      const feedback = explainPause(status.error || control.pauseReason || e.pauseReason, control.fresh) || (snapshot.cameraAdjusting ? 'Camera adjustment · tool world pose is frozen' : e.feedback);
       text('[data-feedback]', feedback || 'Move the instrument with your selected input.');
       get('.training-feedback').dataset.warning = String(paused || Boolean(status.error) || applied.mismatch);
       const dwellTarget = e.target?.dwellMs ?? 500;
@@ -127,9 +148,12 @@ export function createUi(
       get('.training-results').hidden = e.phase !== 'completed';
       text('[data-result-summary]', `${e.targetCount} targets · ${elapsed} · ${e.contactEpisodes} contacts · ${e.pathMm.toFixed(0)} mm path`);
       get<HTMLInputElement>('[data-trail]').checked = snapshot.showTrail;
-      if (status.source !== previousSource) { get<HTMLSelectElement>('[data-source]').value = status.source; previousSource = status.source; }
-      get('[data-serial]').hidden = status.source !== 'serial';
-      text('[data-source-help]', status.source === 'serial' ? 'Physical telemetry · select your device to connect.' : status.source === 'replay' ? 'Replay input · synthetic / recorded motion, not live hardware.' : 'Mock input · simulated controller, not live hardware.');
+      if (previousSource === undefined || (status.source !== previousSource && status.connection === 'connected')) {
+        selectedSource = status.source; get<HTMLSelectElement>('[data-source]').value = selectedSource;
+      }
+      previousSource = status.source;
+      get('[data-serial]').hidden = selectedSource !== 'serial';
+      text('[data-source-help]', selectedSource === 'serial' ? 'Select your physical controller, then Calibrate / set center.' : selectedSource === 'replay' ? '40-second synthetic replay. Calibrate or Resume; choose Replay again to restart.' : 'Click the field. WASD moves across it, Q/E moves down/up, arrows change direction. Calibrate to set center, or Resume.');
       text('[data-connection]', `${status.source.toUpperCase()} / ${status.connection.toUpperCase()}`);
       text('[data-device]', status.deviceLabel || 'No device');
       text('[data-rate]', `${status.packetRateHz.toFixed(0)} Hz`);
