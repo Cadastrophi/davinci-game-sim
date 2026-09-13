@@ -71,7 +71,8 @@ function updateGeometry(mesh: Mesh, positions: number[], indices: number[]) {
 /** Presentation only: progress comes exclusively from the training snapshot. */
 export function createIncisionPatch(scene: Scene) {
   const root = new TransformNode('incision-patch', scene);
-  const surface = material(scene, 'incision-surface', '#d89488', 65);
+  const surface = material(scene, 'incision-surface', '#87534d', 32);
+  surface.specularColor = new Color3(0.04, 0.04, 0.04);
   surface.backFaceCulling = false;
   const wound = material(scene, 'incision-wound-walls', '#983e47', 60);
   wound.backFaceCulling = false;
