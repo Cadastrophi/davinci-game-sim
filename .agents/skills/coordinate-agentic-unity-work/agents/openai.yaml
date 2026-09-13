@@ -1,4 +1,0 @@
-interface:
-  display_name: "Coordinate Agentic Unity Work"
-  short_description: "Coordinate parallel agents and safe Git delivery"
-  default_prompt: "Use $coordinate-agentic-unity-work to coordinate this change with the other active agent and deliver it safely."

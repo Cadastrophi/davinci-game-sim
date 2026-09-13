@@ -113,3 +113,14 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - Remove the two local-only FOC-reference commits from active local branch history without modifying the FOC submodule checkout or upstream repository. Do not garbage-collect unrelated history.
 - Add automated lockfile install, existing tests, typecheck/build and downloadable artifacts for dev/prod pushes and PRs. No deployment destination is selected; deployment remains on hold with hardware acceptance.
 - Close obsolete issue #1 as not planned/superseded. Validate the configuration and report remaining main-retirement conditions.
+
+
+## 2026-09-13 — Move skills to device scope
+
+- **Requested by:** Justin.
+- **Outcome:** Remove all repository-scoped skill packages and use globally installed device-level skills instead.
+- **In scope:** Delete `.agents/skills/`, remove its installation manifest and stale documentation links, and ignore future repository-local skill downloads.
+- **Out of scope:** Global skill installation or removal, application behavior, dependencies, build output, and historical intent records.
+- **Constraints:** Preserve the existing contents and release state of both `dev` and `prod`; apply this maintenance change to each without promoting unrelated dev-only commits.
+- **Acceptance evidence:** Neither branch tracks `.agents/skills/` or `docs/skills/INSTALLED_SKILLS.md`; current agent guidance points to device-level skills; repository-local skill paths are ignored.
+- **Supersedes:** The repository-local skill portion of the 2026-09-13 repository governance bootstrap entry. That earlier entry remains historical evidence.

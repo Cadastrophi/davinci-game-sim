@@ -32,4 +32,4 @@ Choose a route based on what you need. Historical launch records preserve delive
 - [Launch package](launch/README.md), [launch coordination](launch/COORDINATION.md) and [run status](launch/RUN_STATUS.md) — original prompts, delivery gates and deadline-era context.
 - [Active-work mirror](coordination/ACTIVE_WORK.md) — historical ownership snapshot; no longer an operating requirement.
 - [UART reference boundary](references/UART_REFERENCE.md) — permitted upstream use.
-- [Installed skills](skills/INSTALLED_SKILLS.md) and [agent configuration](agents/) — workflow provenance and supporting configuration; historical Unity skills do not define the browser runtime.
+- [Agent configuration](agents/) — supporting configuration for applicable device-level workflows.

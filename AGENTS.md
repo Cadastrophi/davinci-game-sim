@@ -5,8 +5,8 @@ Agents handle Git mechanics for Justin. Preserve the reason for every non-trivia
 ## Read before acting
 
 1. Read `CONTEXT.md`, `docs/README.md`, `docs/PROJECT_INTENT.md`, and relevant ADRs.
-2. For writes to code, assets, settings, documentation or Git state, use `.agents/skills/coordinate-agentic-unity-work/SKILL.md` and `docs/workflows/GIT_WORKFLOW.md`.
-3. Load additional project-local skills only when relevant.
+2. For writes, follow `docs/workflows/AGENT_WORKFLOW.md` and `docs/workflows/GIT_WORKFLOW.md`.
+3. Use applicable device-level skills; do not download or commit skill packages into this repository.
 
 ## Scope and intent
 

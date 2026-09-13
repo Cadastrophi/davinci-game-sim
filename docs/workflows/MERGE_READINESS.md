@@ -64,3 +64,7 @@ Remote dev now preserves remote-main history; the local recovery branch preserve
 ## Publication handoff
 
 Configuration commit `ab86eb6` was pushed on `Cadastrophi_dev-prod-config`. Draft PR creation targeting dev failed with GitHub 403 “Resource not accessible by integration”; no PR was created. The available browser session is signed out. Continue through an authenticated repository session, open the configuration PR, resolve the questions, then complete the migration gate. No main deletion or production promotion occurred.
+
+## Skill-maintenance integration
+
+Remote dev advanced to 76617d2 and prod to aef934e during this task, removing repository-local skills at Justin's request. The configuration branch incorporates that maintenance, keeps device-level skill guidance, and preserves both intent records. The CI-only prod branch starts from aef934e; application release content remains held.
