@@ -43,3 +43,7 @@ App #12 now composes real H input with training/scene/UI. Independent app and UI
 Core app PR #26 merged at `7d6de67`, including all five modes and H input mapping/facade PRs #22/#23. H was notified to fetch and run the localhost MVP before 06:00 UTC. At 05:55 UTC H relayed the user's revised priority: roughly 60 minutes remaining and an integrated hardware-testable MVP within 12 minutes (06:07 UTC). Core delivery met that integration target. Incision remains a separate increment and does not block hardware testing. Live device acceptance is still pending.
 
 H reported at 06:02 UTC that its hardware-test checkout is pinned to merged `7d6de67`, all five modes and serial setup are visible, and typecheck/build pass. No device was detected; real controller connection/calibration remains pending. Keep that checkout stable during live testing.
+
+## Incision verification
+
+The sixth mode is enabled after independent training, scene and UI reviews. Combined 157 tests, typecheck and production build pass. Chrome mock walkthrough visibly opened 50% then 100% of the predefined seam; protected contact stopped the tool and Reset restored closed geometry/0% coverage. Browser console had no errors. The scene material was darkened after visual inspection to retain tissue color under the existing lights. This is a constrained pre-tessellated contact demonstration, not arbitrary cutting or clinical validation. Serial cleanup PR #25 merged at `71f7139` after independent 15-test transport verification.

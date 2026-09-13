@@ -4,8 +4,7 @@ GitHub issues and pull requests in `origin` are the authoritative coordination s
 
 | Issue | Human owner | Agent | Branch | Expected paths / interfaces | Status | Last sync (UTC) |
 | --- | --- | --- | --- | --- | --- | --- |
-| [#27](https://github.com/Cadastrophi/davinci-game-sim/issues/27) | Justin / `Cadastrophi` | Master E + bounded training/scene workers | `Cadastrophi_incision-ui`, `Cadastrophi_incision-training`, `Cadastrophi_incision-scene` | Optional incision DTO, training, scene, UI, shared logs | in progress | 2026-09-13 |
-| [#24](https://github.com/Cadastrophi/davinci-game-sim/issues/24) | Jinyu / `Jin-underworld` | H serial worker / E reviewer | `Jin-underworld_serial-dispose-retry` | Serial cleanup retry and regression | review | 2026-09-13 |
+| [#27](https://github.com/Cadastrophi/davinci-game-sim/issues/27) | Justin / `Cadastrophi` | Master E + bounded training/scene workers | `Cadastrophi_incision-ui`, `Cadastrophi_incision-training`, `Cadastrophi_incision-scene` | Optional incision DTO, training, scene, UI, shared logs | review | 2026-09-13 |
 
 Status values: `claimed`, `in progress`, `blocked`, `review`, or `merged`.
 
