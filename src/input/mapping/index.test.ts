@@ -304,18 +304,18 @@ describe('input sessions, chronology and isolation', () => {
     gains[0] = 100;
     appliedPosition[0] = 100;
     const rawCopy = h.mapping.getRaw()!;
-    (rawCopy.positionMm as number[])[0] = 999;
+    Reflect.set(rawCopy.positionMm, '0', 999);
     const frameCopy = h.frame();
-    (frameCopy.requestedPose.positionMm as number[])[0] = 999;
-    (frameCopy.requestedPose.direction as number[])[0] = 999;
-    (frameCopy.cameraOffsetMm as number[])[0] = 999;
+    Reflect.set(frameCopy.requestedPose.positionMm, '0', 999);
+    Reflect.set(frameCopy.requestedPose.direction!, '0', 999);
+    Reflect.set(frameCopy.cameraOffsetMm, '0', 999);
     h.send({ positionMm: [2, 2, 3] });
     expectVector(h.frame().requestedPose.positionMm, [5, 5, 6]);
     expectVector(h.frame().requestedPose.direction, [0, 0, -1]);
     expectVector(h.frame().cameraOffsetMm, [0, 0, 0]);
     h.mapping.enterCameraMode(pose([8, 9, 10]));
     const frozenCopy = h.frame().frozenPose!;
-    (frozenCopy.positionMm as number[])[0] = 900;
+    Reflect.set(frozenCopy.positionMm, '0', 900);
     expect(h.frame().frozenPose?.positionMm).toEqual([8, 9, 10]);
   });
 
