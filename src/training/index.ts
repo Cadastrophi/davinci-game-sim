@@ -26,7 +26,10 @@ export function createTraining(initialPose: ToolPose = INITIAL_TOOL_POSE): Train
       mode = nextMode; reset(nowMs); phase = 'running';
     },
     reset,
-    pause(reason) { phase = 'paused'; pauseReason = reason; interrupted = true; dwellMs = 0; previousInside = false; },
+    pause(reason) {
+      if (phase === 'ready' || phase === 'completed') return;
+      phase = 'paused'; pauseReason = reason; interrupted = true; dwellMs = 0; previousInside = false;
+    },
     step(frame, nowMs): TrainingState {
       if (!Number.isFinite(nowMs) || (lastNow !== null && nowMs < lastNow)) throw new Error('Training requires a monotonic finite clock');
       const age = nowMs - frame.receivedAtMs;
@@ -55,15 +58,17 @@ export function createTraining(initialPose: ToolPose = INITIAL_TOOL_POSE): Train
       const currentTarget = target();
       const error = currentTarget ? distance(applied.pose.positionMm, currentTarget.positionMm) : null;
       const inside = phase === 'running' && fresh && frame.mode === 'tool' && error !== null && error <= currentTarget!.positionToleranceMm;
-      if (!inside || !previousInside || !continuous || revisionChanged || interrupted) { dwellMs = 0; samples = []; }
-      else dwellMs += dt;
+      if (phase !== 'completed') {
+        if (!inside || !previousInside || !continuous || revisionChanged || interrupted) { dwellMs = 0; samples = []; }
+        else dwellMs += dt;
+      }
       if (inside && newSample) { samples.push(applied.pose.positionMm); if (samples.length > 1000) samples.shift(); }
       let steadinessMm = 0;
       if (samples.length) {
         const mean = [0, 0, 0]; for (const p of samples) for (let i = 0; i < 3; i++) mean[i] = mean[i]! + p[i]! / samples.length;
         steadinessMm = Math.sqrt(samples.reduce((sum, p) => sum + distance(p, [mean[0]!, mean[1]!, mean[2]!]) ** 2, 0) / samples.length);
       }
-      let feedback = mode === 'free' ? 'Free practice — no competitive score' : inside ? 'Hold steady' : 'Reach the target';
+      let feedback = phase === 'completed' ? 'Practice complete' : mode === 'free' ? 'Free practice — no competitive score' : inside ? 'Hold steady' : 'Reach the target';
       let advanced = false;
       if (currentTarget && dwellMs >= currentTarget.dwellMs) {
         targetIndex++; advanced = true;

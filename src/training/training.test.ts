@@ -55,3 +55,35 @@ describe('reach timing', () => {
     expect(() => t.start('camera', 100)).toThrow('not implemented');
   });
 });
+
+describe('terminal phase preservation', () => {
+  it('keeps completion and final metrics across pause and fresh resume', () => {
+    const t = createTraining(pose()); t.start('reach', 0);
+    const positions: Vec3[] = [[0, 24, 0], [-30, 32, 20], [35, 18, -25], [0, 40, 30]];
+    let now = 0;
+    let result = t.step(frame(0), 0);
+    for (const position of positions) {
+      for (let tick = 0; tick <= 5; tick++) {
+        result = t.step(frame(now, { requestedPose: pose(position) }), now);
+        now += 100;
+      }
+    }
+    expect(result.exercise.phase).toBe('completed');
+    expect(result.exercise.targetIndex).toBe(4);
+    const completed = result.exercise;
+    t.pause('Window blurred');
+    expect(t.step(frame(now, { mode: 'paused', fresh: false }), now).exercise.phase).toBe('completed');
+    const resumed = t.step(frame(now + 3000), now + 3000).exercise;
+    expect(resumed.phase).toBe('completed');
+    expect(resumed.targetIndex).toBe(4);
+    expect(resumed.target).toBeNull();
+    expect(resumed.elapsedMs).toBe(completed.elapsedMs);
+    expect(resumed.pathMm).toBe(completed.pathMm);
+    expect(resumed.dwellMs).toBe(completed.dwellMs);
+  });
+  it('keeps an unstarted exercise ready across pause and fresh resume', () => {
+    const t = createTraining(pose()); t.pause('Hidden page');
+    expect(t.step(frame(0, { mode: 'paused' }), 0).exercise.phase).toBe('ready');
+    expect(t.step(frame(100), 100).exercise.phase).toBe('ready');
+  });
+});
