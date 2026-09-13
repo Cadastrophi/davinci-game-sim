@@ -5,8 +5,16 @@ The documentation is the shared memory for humans and agents. Update it in the s
 ## Product and domain
 
 - `PROJECT_INTENT.md` — goal, boundaries, success signals, and unresolved decisions.
-- `../CONTEXT.md` — stable domain language and architectural boundary.
+- `../CONTEXT.md` — stable domain language.
 - `intent/INTENT_LOG.md` — append-only record of requested outcomes and interpretation.
+
+## Accepted launch
+
+- [launch/SPEC.md](launch/SPEC.md) — accepted behavior and acceptance evidence.
+- [launch/CONTRACT.md](launch/CONTRACT.md) — cross-team interface blueprint.
+- [launch/COORDINATION.md](launch/COORDINATION.md) — ownership and integration gates.
+- [launch/RUN_STATUS.md](launch/RUN_STATUS.md) — current run deadline, delivery constraints and status.
+- [launch/README.md](launch/README.md) — immutable package provenance and master prompts.
 
 ## Working together
 

@@ -1,26 +1,39 @@
-# Project context
+# Teleoperation training context
 
-## Purpose
+The domain is a controller-driven practice arena with targets, protected obstacles and a virtual instrument. Product requirements live in [project intent](docs/PROJECT_INTENT.md) and the [accepted specification](docs/launch/SPEC.md).
 
-Build a Unity-based simulator that approaches the visual clarity, environmental fidelity, and interaction quality associated with a da Vinci-style simulator experience. The current Unity prototype is considered too simple, particularly in graphics and presentation.
+## Language
 
-This document names the domain. Product intent and open questions live in `docs/PROJECT_INTENT.md`; durable technical decisions live in `docs/adr/`.
+**Simulator:** The original teleoperation-training application in this repository; its virtual performance measures are not validated clinical or physical-arm accuracy measures.
 
-## Domain language
+**Controller:** The physical robot arm whose reported pose supplies the user's input.
 
-- **Simulator**: the Unity application being built in this repository.
-- **Robot arm**: the physical or simulated mechanism controlled through commands.
-- **UART command**: a serialized command received through the UART-facing input boundary.
-- **Command parser**: the component that turns UART input into validated domain commands.
-- **Command ingestion**: transport-facing receipt, buffering, framing, parsing, validation, and dispatch.
-- **Simulation command**: a transport-independent, validated instruction consumed by simulation logic.
-- **Reference repository**: `references/idp-unity-simulation`, used only to understand UART parsing and ingestion behavior.
-- **Fidelity**: the agreed visual, spatial, physical, and interaction quality of the simulator; exact acceptance criteria remain to be defined.
+**Telemetry packet:** A received controller pose report.
+_Avoid_: UART command, motor command.
 
-## Architectural boundary
+**Raw pose sample:** A validated controller report with position, supported angles, source and host receive time. Placeholder roll is unavailable.
 
-UART transport details must terminate at an adapter boundary. Simulation and presentation code should consume transport-independent commands, not raw serial bytes or assumptions copied from the reference repository.
+**Tool pose:** The virtual instrument's world position and supported pointing direction.
 
-## Current state
+**Requested pose:** The calibrated input demand before contact handling.
 
-Repository governance, documentation, and skills are being established. Game implementation is intentionally out of scope for this bootstrap.
+**Applied pose:** The virtual instrument pose after contact handling; the pose used for exercise measurements.
+
+**Camera adjustment:** A Space-held pan/dolly interval during which the tool world pose stays fixed.
+_Avoid_: Tool clutch, camera orbit.
+
+**Rebase:** Re-anchoring controller input to the current applied pose so control resumes without a discontinuity.
+
+**Virtual mapped direction:** A calibrated pointing direction used by the game without asserting measured physical shaft orientation.
+
+**Physically validated direction:** A pointing mapping supported by recorded checks on the connected device. It does not imply measured axial roll.
+
+**Contact episode:** A continuous encounter with a protected obstacle, producing one penalty until contact is released.
+
+**Dwell:** Continuous eligible time within all required target tolerances.
+
+**Protected obstacle:** A blocking volume that cannot be cut.
+
+**Cuttable tissue:** The designated practice patch whose geometry can separate and deform through instrument contact in incision mode.
+
+**Reference repository:** `references/idp-unity-simulation`, retained solely as evidence for UART receipt, framing, parsing, validation and dispatch.
