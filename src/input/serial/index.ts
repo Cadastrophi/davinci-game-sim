@@ -216,7 +216,7 @@ export function createSerialTransport(options: SerialTransportOptions) {
   }
 
   async function dispose(): Promise<void> {
-    if (disposed) { if (session) await closeSession(session); return; }
+    if (disposed) { if (session) await disconnect(); return; }
     disposed = true;
     await disconnect();
     ports.clear();
