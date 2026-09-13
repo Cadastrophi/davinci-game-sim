@@ -1,5 +1,7 @@
 # Two-Astra launch package
 
+> Historical record. Current workflow: [ADR 0004](../adr/0004-dev-prod-local-workflow.md). Past deadlines, collaborator ownership and acknowledgement gates are superseded. Preserve this record as evidence.
+
 Revision: launch-v1, 2026-09-13. Prepared at Justin's request; preparing these documents does not start implementation.
 
 Give [MASTER_EXPERIENCE.md](MASTER_EXPERIENCE.md) to Justin's Astra and [MASTER_HARDWARE.md](MASTER_HARDWARE.md) to Jinyu's Astra on the hardware-connected computer. Roles may be swapped explicitly, but there must be exactly one of each. Both prompts can be submitted concurrently once both agents can read this package from the same Git commit. Do not paste both into one agent or launch duplicate masters.

@@ -96,3 +96,12 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Coordination:** Isolated branch justin/judging-evidence; #37 owner explicitly acknowledged shared-log append and confirmed frozen runtime work; pitch task confirmed no file overlap. GitHub issue creation returned 403. Justin subsequently explicitly authorized applying and pushing all prepared documentation directly to main, overriding the issue-claim and PR requirements for this task.
 - **Validation:** Relative documentation links checked against current main; no runtime changes or new hardware tests.
 - **Handoff:** Add actual session evidence using docs/showcase/EVIDENCE_TEMPLATE.md; publish directly to main as explicitly requested; preserve unrelated local commits and working files.
+
+
+## 2026-09-13 — Stabilize dev/prod configuration and audit merge readiness
+
+- Request: inspect current issues, dev/prod branches, conflicts and errors; present questions before merging; retire main only after dev/prod safely replace it. Remove concurrent-friend/hackathon operating requirements while preserving intent and work records. Use TDD for behavioral corrections.
+- Scope: repository audit, branch/workflow documentation, runnable baseline validation, and safe migration preparation. No unrequested feature promotion or hardware behavior changes.
+- Evidence at start: remote main 61efa65, prod 04fbf5f, no dev; local main 64afb7d has two unique FOC-reference commits and is 25 behind remote main. Preserve all local work.
+- Decisions: dev is the integration branch; prod retains the current release until a reviewed promotion. Historical records remain evidence and cannot impose obsolete ownership/deadline gates.
+- Completion evidence and unresolved release questions: docs/workflows/MERGE_READINESS.md. New behavioral tests wait for user-confirmed public seams under the TDD skill.

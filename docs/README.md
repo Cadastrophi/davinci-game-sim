@@ -19,6 +19,8 @@ Choose a route based on what you need. Historical launch records preserve delive
 ## Work on the implementation
 
 - [Agent operating contract](../AGENTS.md) — current local validation and PR integration rules.
+- [Git workflow](workflows/GIT_WORKFLOW.md) and [agent workflow](workflows/AGENT_WORKFLOW.md) — dev/prod integration and work records.
+- [Merge readiness](workflows/MERGE_READINESS.md) — current audit and release questions.
 - [Shared interface contract](launch/CONTRACT.md) — input/experience boundary.
 - [Hardware handoff](hardware/INPUT_HANDOFF.md) — serial, mapping and source composition.
 - [Component handoffs](handoffs/) — scoped ownership, APIs, validation and delivery limitations.
@@ -28,6 +30,6 @@ Choose a route based on what you need. Historical launch records preserve delive
 ## Recover the build history
 
 - [Launch package](launch/README.md), [launch coordination](launch/COORDINATION.md) and [run status](launch/RUN_STATUS.md) — original prompts, delivery gates and deadline-era context.
-- [Agent workflow](workflows/AGENT_WORKFLOW.md), [Git workflow](workflows/GIT_WORKFLOW.md) and [active-work mirror](coordination/ACTIVE_WORK.md) — earlier coordination procedures and ownership snapshots. These retain issue/handshake requirements that were made optional by the current AGENTS.md; inspect live PRs for current work.
+- [Active-work mirror](coordination/ACTIVE_WORK.md) — historical ownership snapshot; no longer an operating requirement.
 - [UART reference boundary](references/UART_REFERENCE.md) — permitted upstream use.
 - [Installed skills](skills/INSTALLED_SKILLS.md) and [agent configuration](agents/) — workflow provenance and supporting configuration; historical Unity skills do not define the browser runtime.

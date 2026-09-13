@@ -1,33 +1,18 @@
-## Intent
+## Intent and scope
 
-Closes #
-
-Requested outcome and why:
-
-## Scope
-
-- In scope:
-- Out of scope:
-
-## Coordination
-
-- Human owner / agent:
-- Branch:
-- Other open work checked:
-- Overlapping files or interfaces and acknowledgement:
+Requested outcome, relevant issue (if any), and intent-log entry:
 
 ## Changes
 
+Behavior and reason:
+
 ## Validation
 
-- [ ] Focused checks passed
-- [ ] Current `origin/main` incorporated
-- [ ] Open PRs re-checked for overlap
-- [ ] Docs / intent / ADR updated where needed
-- [ ] Unity version and manual scene verification recorded when applicable
+- [ ] Local checks and results recorded, including source SHA
+- [ ] Current target branch incorporated; complete diff and actual conflicts reviewed
+- [ ] Intent, decisions and handoff updated
+- [ ] Relevant browser/device evidence recorded separately from mocks
 
-## Risks and rollback
+## Release and rollback
 
-## Visual evidence
-
-Required for visible Unity changes; otherwise write “Not applicable.”
+For dev-to-prod promotion: candidate SHA, accepted scope, unresolved decisions, acceptance evidence and previous prod SHA. Use a merge commit to preserve promotion ancestry.

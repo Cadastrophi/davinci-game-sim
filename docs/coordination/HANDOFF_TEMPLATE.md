@@ -10,7 +10,7 @@
 - **Decisions and assumptions:**
 - **Validation performed / results:**
 - **Known failures or risks:**
-- **Other active work checked:**
+- **Relevant dependencies:**
 - **Next safe action:**
 
-The receiving agent must fetch the branch, compare the stated commit, inspect the working tree, and acknowledge the handoff before pushing to the same branch.
+The receiving agent must fetch the branch, compare the stated commit, inspect the working tree, and preserve any uncommitted changes before continuing work.
