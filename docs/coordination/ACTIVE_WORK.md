@@ -1,5 +1,7 @@
 # Active work mirror
 
+> Historical record. Current workflow: [ADR 0004](../adr/0004-dev-prod-local-workflow.md). Past deadlines, collaborator ownership and acknowledgement gates are superseded. Preserve this record as evidence.
+
 GitHub issues and pull requests in `origin` are the authoritative coordination surface. This file is a quick local mirror and can briefly lag behind the remote.
 
 | Issue | Human owner | Agent | Branch | Expected paths / interfaces | Status | Last sync (UTC) |

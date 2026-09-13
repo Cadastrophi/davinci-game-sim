@@ -1,5 +1,5 @@
 name: Agent task
-description: Claim a scoped task before an agent begins work
+description: Record a scoped task and its acceptance evidence
 title: "[Task]: "
 body:
   - type: textarea
@@ -27,7 +27,7 @@ body:
     id: branch
     attributes:
       label: Planned branch
-      placeholder: "justin/short-slug"
+      placeholder: "Cadastrophi_short-slug"
     validations:
       required: true
   - type: textarea
@@ -38,10 +38,10 @@ body:
     validations:
       required: true
   - type: textarea
-    id: coordination
+    id: related_work
     attributes:
-      label: Concurrent work checked
-      description: Link related issues/PRs and record overlap acknowledgement.
+      label: Related work
+      description: Link relevant issues/PRs and describe actual dependencies.
     validations:
       required: true
   - type: textarea

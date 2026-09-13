@@ -30,3 +30,5 @@ Naming: `NNNN-short-title.md`. Status values: `proposed`, `accepted`, `supersede
 
 - `0002` — reserved for peer research; no record imported by D0.
 - [0003-browser-training-launch.md](0003-browser-training-launch.md) — accepted browser stack, ownership boundary and implementation launch.
+
+- [0004-dev-prod-local-workflow.md](0004-dev-prod-local-workflow.md) — dev/prod integration and retirement of concurrent/hackathon operating gates.

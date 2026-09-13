@@ -1,39 +1,28 @@
 # Agent operating contract
 
-This repository is developed primarily by autonomous agents acting for Justin and Jinyu. Humans are not expected to manage Git mechanics. Every agent owns the safety of its local work, the clarity of its intent, and the quality of what it merges.
+Agents handle Git mechanics for Justin. Preserve the reason for every non-trivial change and leave work recoverable.
 
 ## Read before acting
 
-1. Read `CONTEXT.md`, `docs/README.md`, and `docs/PROJECT_INTENT.md`.
-2. Read the ADR index and any ADR relevant to the files or subsystem being changed.
-3. Use applicable device-level skills for the task. Do not download or commit skill packages into this repository.
+1. Read `CONTEXT.md`, `docs/README.md`, `docs/PROJECT_INTENT.md`, and relevant ADRs.
+2. For writes, follow `docs/workflows/AGENT_WORKFLOW.md` and `docs/workflows/GIT_WORKFLOW.md`.
+3. Use applicable device-level skills; do not download or commit skill packages into this repository.
 
 ## Scope and intent
 
-- Preserve the current task's user intent in `docs/intent/INTENT_LOG.md` before implementation when the request is more than a trivial edit.
-- Implementation is authorized for the original browser teleoperation-training game described in `docs/launch/SPEC.md`; read `docs/launch/RUN_STATUS.md` for current delivery constraints and launch gates. The accepted Babylon.js/TypeScript/Vite direction supersedes the former Unity product plan.
-- `references/idp-unity-simulation` is an upstream reference only for UART command parsing and ingestion. Never copy its gameplay, visuals, scene structure, or unrelated architecture into this project.
-- Do not invent product decisions. Record consequential choices as ADRs; record unresolved decisions in `docs/PROJECT_INTENT.md`.
+- Append non-trivial requests, scope and acceptance evidence to `docs/intent/INTENT_LOG.md` before implementation.
+- The active product is the Babylon.js/TypeScript/Vite browser teleoperation trainer. `docs/launch/SPEC.md` defines behavior; `docs/PROJECT_INTENT.md` defines current scope. Historical Unity plans, hackathon deadlines and two-master ownership gates do not govern new work.
+- `references/idp-unity-simulation` is a UART ingestion reference only. Preserve ADR 0001; create original gameplay, visuals and architecture.
+- Record consequential decisions as ADRs and unresolved product choices in the project intent.
 
-## Local-first integration protocol
+## Integration
 
-- Run implementation and proportionate validation locally on the machine doing the work. Local execution is the acceptance source of truth; do not depend on cloud tasks or remote execution to complete a change.
-- Never develop on `main` and never share a working branch with another agent. Start a unique local branch or worktree from current `origin/main`, using `<github-login>_<branch-name>` after verifying the push identity.
-- Assume work performed on the two devices is independent. GitHub issues, issue claims, the active-work mirror, and peer acknowledgements are not required to start or complete a task.
-- Preserve unrelated work. If actual overlap appears in changed paths, public interfaces, or merge conflicts, inspect both intents and resolve the overlap deliberately before integration.
-- After local validation passes, push the branch and open a pull request. Review the complete PR diff, required checks, and mergeability against the latest `origin/main`.
-- When the PR is correct, checks pass, and no unresolved overlap remains, squash-merge it into `main` immediately. Never bypass required checks, force-push another agent's branch, or merge changes that were not reviewed.
-- Confirm the merge is visible on `origin/main`. Remove the branch or worktree only when the merged commit remains recoverable.
+- Work locally on a unique feature branch from current `origin/dev`. Keep `dev` and `prod` free of direct development.
+- Follow `docs/workflows/GIT_WORKFLOW.md` for naming, review, promotion and recovery. Inspect live issues/PRs for relevant context; claims and peer acknowledgements are not prerequisites.
+- Preserve unknown edits and commits. Resolve actual conflicts by understanding both intents.
+- Run proportionate local checks and review the complete diff before integration. Honor required remote checks. Production promotion requires explicit release scope and acceptance evidence.
+- A request for questions before merge pauses integration until those decisions are resolved.
 
-## Change quality
+## Completion
 
-- Keep commits single-purpose and explain why in the message.
-- Preserve unrelated work and never discard uncommitted changes you did not create.
-- Test in proportion to risk. For Unity changes, include Editor version, platform, commands/checks run, and any manual scene verification in the PR.
-- A task is not complete until intent, implementation, verification, and handoff are all legible to the other agent.
-
-## Agent skills
-
-### Domain docs
-
-This is a single-context repository rooted at `CONTEXT.md`; see `docs/agents/domain.md`.
+Record implementation, validation commands/results, limitations, decisions and next action in the PR or handoff. For visible changes include browser evidence; distinguish mock evidence from hardware evidence. Keep commits single-purpose and never discard uncommitted work you did not create.

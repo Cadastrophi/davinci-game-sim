@@ -1,56 +1,44 @@
 # Git workflow
 
-## Invariants
+## Branch roles
 
-- `main` is always integration-ready and is never a working branch.
-- One task, one issue, one owner, one branch, one pull request.
-- One branch is written by one agent at a time unless a handoff is explicitly recorded.
-- Fetch and collision-check before starting, before pushing, and before merging.
-- Never discard unknown local changes, force-push a shared branch, or resolve a conflict by blindly choosing one side.
+- `dev`: integration branch and intended GitHub default. Feature PRs target dev.
+- `prod`: accepted release snapshot. Promote reviewed dev changes through a dev-to-prod PR; a branch name alone does not deploy the application.
+- `main`: transitional legacy branch. Retire only after the migration gate below passes.
 
-## Branch naming
+Use `<github-login>_<short-slug>` for feature branches. Verify the account authenticated by the push remote, rather than inferring it from the repository owner or commit author. Existing historical names remain valid.
 
-Use `<github-login>_<branch-name>`, with one underscore separating the pushing account's GitHub login from a short, lowercase, hyphen-separated task name. Preserve the login's spelling. For example: `Cadastrophi_update-controller-input` or `Jin-underworld_branch-naming`.
+## Work and validation
 
-Before creating the branch, inspect `git remote get-url --push origin` and verify the account authenticated by that push connection. For SSH, use `ssh -T` with the same user and host/alias as the push URL; GitHub's successful greeting identifies the account even though the command normally exits with status 1. For HTTPS, verify the account associated with Git's configured push credential; `gh api user --jq .login` is suitable only when Git uses that same GitHub CLI account.
+1. Inspect `git status --short --branch`, fetch/prune origin, and inspect relevant open issues/PRs.
+2. Create an isolated feature branch from current origin/dev. Record non-trivial intent before editing; issue claims and collaborator acknowledgements are optional.
+3. Preserve unknown edits and commits. Understand both sides of any actual conflict; never blindly select a whole side.
+4. Run a lockfile install with `npm ci`, then `npm test` and `npm run build` (which includes typechecking). Record Node version and browser/hardware checks as appropriate. For behavioral fixes follow the TDD skill at confirmed public seams.
+5. Fetch again and incorporate current origin/dev. Review the full diff and required checks before pushing and merging the feature PR. Prefer squash merges for feature PRs. A user request for pre-merge decisions overrides automatic integration.
+6. Verify the merged remote commit before cleaning up a feature branch/worktree. Leave intent, results and remaining work legible.
 
-Use the authenticated login, not the repository owner, `git config user.name`, commit author, or a fixed Justin/Jinyu/agent mapping. If the pushing account cannot be verified, resolve that identity before creating or publishing a branch.
+## Production promotion
 
-Create a unique branch from current `origin/main`; add a short task suffix if the name already exists. Re-check the account before pushing. If the pushing account changes, create a new correctly prefixed branch containing the intended commits and record the handoff; preserve any shared branch. Existing historical branch names remain unchanged.
+Open a PR from dev to prod with the exact candidate SHA, release scope, automated results, relevant browser/device evidence and rollback SHA. Resolve outstanding release decisions before merge. Prefer a merge commit for promotions so prod contains the validated dev history and future comparisons remain meaningful. Do not squash repeated dev-to-prod promotions. If the repository disallows merge commits, resolve that configuration before promotion.
 
-## Start checklist
+Fix production defects on a branch, validate them, and integrate the same fix into dev. Never force-push dev or prod or bypass required checks. Local checks remain required even if CI is added.
 
-```bash
-git status --short --branch
-git fetch origin --prune
-git log --oneline --decorate -n 12 origin/main
-git branch --all
-```
+## Retiring main
 
-Also inspect open issues and pull requests, because branches alone do not communicate intent.
+All conditions must be verified before deleting remote or local main:
 
-## Commits
+- Remote dev exists and contains the complete remote-main history; prod exists at an identified, recoverable release.
+- GitHub's default branch is dev. Inspect branch protections/rulesets, PR bases and deployment integrations; migrate any main-specific settings. Report unavailable settings rather than assuming they are correct.
+- Every commit unique to local main is integrated, preserved or explicitly rejected by the user. Preserve dirty worktrees and submodule files.
+- Feature/release PRs and merge-readiness questions have been reviewed; no remaining consumer requires main.
+- Fetch and re-check SHAs immediately before deletion. Switch the primary working checkout away from main safely. Retain a recovery ref for the old tip.
 
-Keep commits reviewable and single-purpose. Use an imperative subject with a conventional prefix where helpful, such as `docs: establish agent coordination contract`. Do not mix formatting churn, generated Unity files, and behavioral changes.
+See [merge readiness](MERGE_READINESS.md) for the current audit and unresolved decisions.
 
-## Before push or PR update
+## Automated delivery checks
 
-```bash
-git fetch origin --prune
-git diff --name-status origin/main...HEAD
-git log --oneline origin/main..HEAD
-```
+`.github/workflows/ci.yml` runs existing tests and production builds on dev/prod pushes and PRs targeting either branch. It uses Node 24.14.1, a lockfile install, read-only repository permissions and no submodule checkout. Each successful run uploads dist as a 14-day artifact tied to the tested SHA. Configure `Test and build` as the required status check after its first successful run.
 
-Compare the changed paths and contracts with every open PR. If `origin/main` moved, update the branch and repeat validation. Use `--force-with-lease` only for your own unshared branch and only when rewriting is truly necessary.
+Production feature promotion and deployment are on hold pending hardware verification. CI builds are downloadable candidates, not hardware acceptance or an automatic deployment. No hosting destination or deployment credentials are configured by this change. A CI-only PR into prod may proceed without promoting dev application changes.
 
-## Conflict resolution
-
-Understand the intent of both sides from their issues, PRs, and commits. For Unity YAML/scene/prefab conflicts, prefer splitting ownership or using Unity Smart Merge; validate the resulting asset in the matching Unity Editor. Record any behavior choice made during resolution in the PR or an ADR.
-
-## Merge
-
-Prefer squash merge after review and passing checks. Confirm the PR still reflects the latest `origin/main`, no new overlapping PR appeared, and the other agent acknowledged shared interfaces. Do not delete a branch until the merge commit is visible and any remaining work has a new owner.
-
-## Emergency recovery
-
-Stop when history, ownership, or uncommitted changes are unclear. Preserve evidence with `git status`, `git diff`, `git log`, and a patch or temporary branch; never use destructive reset/checkout as a discovery tool. Escalate with the exact branch, commit, changed paths, and intended recovery.
+Action sources: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node), [upload-artifact](https://github.com/actions/upload-artifact).

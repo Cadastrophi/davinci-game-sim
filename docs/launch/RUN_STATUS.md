@@ -1,5 +1,7 @@
 # Launch run status
 
+> Historical record. Current workflow: [ADR 0004](../adr/0004-dev-prod-local-workflow.md). Past deadlines, collaborator ownership and acknowledgement gates are superseded. Preserve this record as evidence.
+
 Updated 2026-09-13 for D0. [Issue #1](https://github.com/Cadastrophi/davinci-game-sim/issues/1) remains authoritative for live coordination. This file records operational updates without rewriting the original six launch documents.
 
 ## Current constraints

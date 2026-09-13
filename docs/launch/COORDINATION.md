@@ -1,5 +1,7 @@
 # Two masters, bounded workers, one integration owner
 
+> Historical record. Current workflow: [ADR 0004](../adr/0004-dev-prod-local-workflow.md). Past deadlines, collaborator ownership and acknowledgement gates are superseded. Preserve this record as evidence.
+
 This supplements, not replaces, `AGENTS.md` and the current Git workflow. Use [issue #1](https://github.com/Cadastrophi/davinci-game-sim/issues/1) as cross-computer coordination; local files/chat are supplementary. Two subscriptions do not share a mailbox or memory.
 
 ## Authority and startup
