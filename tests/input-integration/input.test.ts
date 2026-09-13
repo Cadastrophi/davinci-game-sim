@@ -133,6 +133,22 @@ describe('composed input facade', () => {
     expect(input.snapshot(time).control.mode).toBe('paused');
     await input.dispose();
   });
+
+  it('a later dispose retries cleanup after a transient close failure', async () => {
+    let closes = 0;
+    const port: SerialPortLike = {
+      readable: new ReadableStream<Uint8Array>(), async open() {}, getInfo: () => ({}),
+      async close() { closes++; if (closes === 1) throw new Error('transient-close'); },
+    };
+    const input = createInputFacade({ now: () => 1000, secureContext: true,
+      serial: { requestPort: async () => port, getPorts: async () => [port] } });
+    const devices = await input.refreshGrantedDevices();
+    expect((await input.connect(devices[0]!.id, DEFAULT_SERIAL_SETTINGS)).ok).toBe(true);
+    await input.dispose();
+    expect(closes).toBe(1);
+    await input.dispose();
+    expect(closes).toBe(2);
+  });
 });
 
 describe('discrete synthetic providers', () => {
