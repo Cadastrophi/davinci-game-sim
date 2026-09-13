@@ -90,7 +90,7 @@ export interface InputFacade {
   resume(appliedPose: ToolPose): Result;
   dispose(): Promise<void>;
 }
-export type ExerciseMode = 'free' | 'reach' | 'align' | 'obstacle' | 'camera';
+export type ExerciseMode = 'free' | 'reach' | 'align' | 'obstacle' | 'camera' | 'incision';
 export interface Target {
   readonly id: string;
   readonly positionMm: Vec3;
@@ -123,7 +123,21 @@ export interface ExerciseSnapshot {
   readonly pauseReason: string | null;
   readonly feedback: string;
 }
+/** Disclosed pre-tessellated seam demonstration, driven by applied-tip contact. */
+export interface IncisionSnapshot {
+  readonly seamStartMm: Vec3;
+  readonly seamEndMm: Vec3;
+  /** Outer patch half-width, perpendicular to its seam. */
+  readonly halfWidthMm: number;
+  readonly cutSegments: readonly boolean[];
+  readonly coverage01: number;
+  readonly contact: boolean;
+  readonly depthMm: number | null;
+  readonly deviationMm: number | null;
+}
+
 export interface TrainingState {
+  readonly incision?: IncisionSnapshot | null;
   readonly applied: AppliedToolState;
   readonly exercise: ExerciseSnapshot;
   readonly obstacles: readonly Obstacle[];
