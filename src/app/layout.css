@@ -1,0 +1,7 @@
+:root { font-family: system-ui, sans-serif; color: #e9eee8; background: #091014; font-synthesis: none; }
+* { box-sizing: border-box; }
+html, body, #app { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+#app { position: relative; }
+.practice-canvas { position: absolute; left: 260px; top: 0; width: calc(100% - 260px); height: calc(100% - 145px); display: block; outline: none; touch-action: none; }
+.practice-overlay { position: absolute; inset: 0; pointer-events: none; }
+@media (max-width: 780px) { .practice-canvas { left: 210px; width: calc(100% - 210px); } }

@@ -1,0 +1,23 @@
+# Local demonstration
+
+Use Node 22.12 or newer. From the reviewed checkout, run `npm ci`, then `npm run dev`. Open http://127.0.0.1:5173. For the built version, run `npm run build` then `npm run preview`. The demo runs locally; no hosting account is needed.
+
+## Controls
+
+The default source is an interactive synthetic controller. Click the field to focus it. WASD moves across the field; Q/E moves down/up; arrow keys change virtual pointing direction. Taps make fine steps and holds move continuously. These are virtual inputs, not hardware observations.
+
+Hold Space and move to pan/dolly the camera. Tool world position and direction remain fixed; camera orientation and FOV remain fixed. Release keeps the new view and rebases the tool without a jump. Space does not capture typing or setup controls.
+
+Select a drill to start. Reach requires a continuous 0.5-second hold within 10 mm; alignment also requires direction within 10 degrees. Obstacle navigation blocks the short blade against protected volumes and counts one contact episode until separation. Camera navigation requires a new camera adjustment of at least 5 mm requested displacement before each target acquisition. Protected volumes are non-cuttable.
+
+Calibrate / set center anchors the selected source at the current applied tool pose. Resume also rebases after a pause. Reset clears the current exercise and restores the default camera, while preserving the applied tool pose. If an obstacle drill cannot start because the blade overlaps a protected volume, use Free practice to move clear and retry.
+
+A stale stream, source change, blur or hidden page pauses control. Fresh data alone never resumes it; choose Resume or calibrate deliberately. Background-tab throttling can trigger this pause. Intentional Space adjustments count elapsed time; outages and explicit pauses do not.
+
+Replay is a 40-second synthetic event sequence with truthful replay provenance. It ends with a stale-input pause. Select another source and Replay again to restart. It is not a recording from the physical controller.
+
+## Physical controller
+
+On the controller computer, choose Serial, then Connect device in a Web Serial-capable browser. Select the actual port. Defaults are 115200 baud, 8 data bits, no parity, one stop bit and no flow control; confirm framing on the actual device. Center the controller, select the correct axis permutation/signs/gains, then calibrate. Device input is receive-only.
+
+Telemetry reports the actual input provenance; the selected setup source can differ while waiting for connection. Direction remains virtual-mapped unless independently validated; roll is unavailable. See [H's checklist](../hardware/INPUT_HANDOFF.md) for live acceptance. Automated fixtures and browser mock checks are not live-device evidence.

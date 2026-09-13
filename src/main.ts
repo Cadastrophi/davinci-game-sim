@@ -1,32 +1,42 @@
-import { Engine } from '@babylonjs/core/Engines/engine';
-import { Scene } from '@babylonjs/core/scene';
-import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
-import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
-import { CreateGround } from '@babylonjs/core/Meshes/Builders/groundBuilder';
-import { CreateSphere } from '@babylonjs/core/Meshes/Builders/sphereBuilder';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { CAMERA_HOME, CAMERA_FORWARD, CONTRACT_REVISION } from './contracts';
-import { replayFrame } from './app/mock-bootstrap';
-import './app/base.css';
+import { DEFAULT_CALIBRATION, INITIAL_TOOL_POSE, type Result, type Source } from './contracts';
+import { createInputFacade, createManualSource, createReplayDriver } from './input';
+import { mountApplication } from './app/mount';
+import { attachManualControls } from './app/manual-controls';
 
-const root = document.querySelector<HTMLDivElement>('#app')!;
-root.innerHTML = `<header><span class="brand">FORMA<span>INSTRUMENT PRACTICE</span></span><span class="badge">REPLAY · NO HARDWARE</span></header><main><div class="intro"><p class="eyebrow">PRACTICE FIELD / 01</p><h1>Precision begins<br>with control.</h1><p>A shared foundation for instrument practice.<br>Scene and exercises are the next reviewed increment.</p><small>${CONTRACT_REVISION} · Virtual direction · Roll unavailable</small></div><canvas aria-label="Replay of a virtual instrument above the practice field"></canvas></main><footer>LOCAL REPLAY BASELINE<span>Receive-only hardware integration pending</span></footer>`;
-const canvas = root.querySelector('canvas')!;
-const engine = new Engine(canvas, true);
-const scene = new Scene(engine);
-scene.useRightHandedSystem = true;
-scene.clearColor = new Color4(0.039, 0.071, 0.094, 1);
-const camera = new FreeCamera('fixed', new Vector3(...CAMERA_HOME), scene);
-camera.setTarget(camera.position.add(new Vector3(...CAMERA_FORWARD)));
-camera.minZ = 0.1;
-new HemisphericLight('soft', new Vector3(0, 1, 0), scene);
-const pad = CreateGround('practice-pad', { width: 150, height: 110 }, scene);
-const material = new StandardMaterial('original-procedural-tissue', scene);
-material.diffuseColor = new Color3(0.46, 0.24, 0.25);
-pad.material = material;
-const tool = CreateSphere('replay-tip', { diameter: 5 }, scene);
-const metal = new StandardMaterial('metal', scene); metal.diffuseColor = new Color3(0.6, 0.91, 0.88); tool.material = metal;
-engine.runRenderLoop(() => { tool.position.copyFromFloats(...replayFrame(performance.now()).requestedPose.positionMm); scene.render(); });
-window.addEventListener('resize', () => engine.resize());
+const input = createInputFacade({ now: () => performance.now() });
+type Provider = { tick(): Result; dispose(): void };
+let provider: Provider | null = null;
+let manual: ReturnType<typeof createManualSource> | null = null;
+let keyboard: ReturnType<typeof attachManualControls> | null = null;
+function stopSource() {
+  provider?.dispose(); provider = null; manual = null; keyboard?.clear();
+}
+function sourceSelected(source: Source) {
+  stopSource();
+  if (source === 'mock') { manual = createManualSource(input, { now: () => performance.now() }); provider = manual; }
+  if (source === 'replay') provider = createReplayProvider();
+  provider?.tick();
+}
+
+function createReplayProvider() {
+  const events = Array.from({ length: 2001 }, (_, i) => ({
+    atMs: i * 20,
+    positionMm: [Math.sin(i / 75) * 35, Math.sin(i / 110) * 10, Math.cos(i / 75) * 20 - 20] as const,
+    yawDeg: Math.sin(i / 100) * 15,
+    pitchDeg: Math.sin(i / 140) * 10,
+  }));
+  return createReplayDriver(input, events, { now: () => performance.now() });
+}
+
+sourceSelected('mock');
+input.calibrate(DEFAULT_CALIBRATION, INITIAL_TOOL_POSE);
+input.resume(INITIAL_TOOL_POSE);
+const application = mountApplication(document.querySelector<HTMLElement>('#app')!, {
+  input, onSource: sourceSelected, stopSource,
+  pump: () => { keyboard?.tick(); provider?.tick(); },
+  availableModes: ['free', 'reach', 'align', 'obstacle', 'camera'],
+});
+keyboard = attachManualControls(document.querySelector<HTMLCanvasElement>('.practice-canvas')!, () => manual);
+void application.controller.command({ type: 'start', mode: 'free' });
+
+if (import.meta.hot) import.meta.hot.dispose(() => { keyboard?.dispose(); void application.dispose(); });
