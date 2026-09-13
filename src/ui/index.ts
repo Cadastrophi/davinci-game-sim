@@ -11,6 +11,7 @@ const MODES: readonly [ExerciseMode, string, string][] = [
   ['align', 'Direction alignment', 'Match position and direction'],
   ['obstacle', 'Obstacle navigation', 'Find a clear path'],
   ['camera', 'Camera & navigation', 'Reposition your view'],
+  ['incision', 'Constrained incision', 'Open a predefined tissue seam'],
 ];
 
 function explainPause(reason: string | null, fresh: boolean): string | null {
@@ -74,7 +75,7 @@ export function createUi(
       <div class="training-feedback" role="status" aria-live="polite"><span data-feedback>Choose an exercise to begin.</span></div>
       <div class="training-results" hidden><div class="training-section-label">SESSION COMPLETE</div><h2>Practice makes precise.</h2><p data-result-summary></p><button type="button" data-retry>Try again ↗</button></div>
       <div class="training-bottom">
-        <div class="training-dwell"><span>HOLD PROGRESS</span><span data-dwell-text>0 / 0.5 s</span><progress data-dwell max="1" value="0" aria-label="Continuous target dwell"></progress></div>
+        <div class="training-dwell"><span data-progress-label>HOLD PROGRESS</span><span data-dwell-text>0 / 0.5 s</span><progress data-dwell max="1" value="0" aria-label="Continuous target dwell"></progress></div>
         <div class="training-metrics" aria-label="Session measurements">
           <div><span>TIME</span><strong data-elapsed>0:00.0</strong></div><div><span>POSITION ERROR</span><strong data-position>—</strong></div><div><span>DIRECTION ERROR</span><strong data-angle>—</strong></div><div><span>PATH</span><strong data-path>0 mm</strong></div><div><span>CONTACTS</span><strong data-contacts>0</strong></div><div><span>STEADINESS</span><strong data-steady>0 mm</strong></div>
         </div>
@@ -133,10 +134,19 @@ export function createUi(
       const feedback = explainPause(status.error || control.pauseReason || e.pauseReason, control.fresh) || (snapshot.cameraAdjusting ? 'Camera adjustment · tool world pose is frozen' : e.feedback);
       text('[data-feedback]', feedback || 'Move the instrument with your selected input.');
       get('.training-feedback').dataset.warning = String(paused || Boolean(status.error) || applied.mismatch);
+      const incision = e.mode === 'incision' ? snapshot.incision : null;
       const dwellTarget = e.target?.dwellMs ?? 500;
       get<HTMLProgressElement>('[data-dwell]').value = dwellTarget > 0 ? Math.min(1, e.dwellMs / dwellTarget) : 0;
-      get('.training-dwell').hidden = !e.target;
+      get('.training-dwell').hidden = !e.target && !incision;
+      text('[data-progress-label]', incision ? 'SEAM COVERAGE' : 'HOLD PROGRESS');
+      get('[data-dwell]').setAttribute('aria-label', incision ? 'Incision seam coverage' : 'Continuous target dwell');
       text('[data-dwell-text]', `${(e.dwellMs / 1000).toFixed(1)} / ${(dwellTarget / 1000).toFixed(1)} s`);
+      if (incision) {
+        get<HTMLProgressElement>('[data-dwell]').value = incision.coverage01;
+        text('[data-dwell-text]', `${Math.round(incision.coverage01 * 100)}%`);
+        text('[data-target]', 'CONSTRAINED INCISION DEMONSTRATION');
+        text('[data-direction]', `Depth ${incision.depthMm === null ? '—' : incision.depthMm.toFixed(1) + ' mm'} · seam offset ${incision.deviationMm === null ? '—' : incision.deviationMm.toFixed(1) + ' mm'}`);
+      }
       const elapsed = `${Math.floor(e.elapsedMs / 60000)}:${((e.elapsedMs % 60000) / 1000).toFixed(1).padStart(4, '0')}`;
       const metric = (value: number | null, unit: string) => value === null || !Number.isFinite(value) ? '—' : `${value.toFixed(1)} ${unit}`;
       text('[data-elapsed]', elapsed);
@@ -146,7 +156,7 @@ export function createUi(
       text('[data-contacts]', String(e.contactEpisodes));
       text('[data-steady]', metric(e.steadinessMm, 'mm'));
       get('.training-results').hidden = e.phase !== 'completed';
-      text('[data-result-summary]', `${e.targetCount} targets · ${elapsed} · ${e.contactEpisodes} contacts · ${e.pathMm.toFixed(0)} mm path`);
+      text('[data-result-summary]', `${incision ? `${Math.round(incision.coverage01 * 100)}% predefined seam opened` : `${e.targetCount} targets`} · ${elapsed} · ${e.contactEpisodes} contacts · ${e.pathMm.toFixed(0)} mm path`);
       get<HTMLInputElement>('[data-trail]').checked = snapshot.showTrail;
       if (previousSource === undefined || (status.source !== previousSource && status.connection === 'connected')) {
         selectedSource = status.source; get<HTMLSelectElement>('[data-source]').value = selectedSource;
