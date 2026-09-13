@@ -10,13 +10,13 @@
 
 ## Branch naming
 
-Use `<owner>/<short-slug>`:
+Use `<github-login>_<branch-name>`, with one underscore separating the pushing account's GitHub login from a short, lowercase, hyphen-separated task name. Preserve the login's spelling. For example: `Cadastrophi_update-controller-input` or `Jin-underworld_branch-naming`.
 
-- `justin/<short-slug>` when authenticated as `Cadastrophi`.
-- `jinyu/<short-slug>` for Jinyu's work.
-- `agent/<short-slug>` only when no human owner can be established.
+Before creating the branch, inspect `git remote get-url --push origin` and verify the account authenticated by that push connection. For SSH, use `ssh -T` with the same user and host/alias as the push URL; GitHub's successful greeting identifies the account even though the command normally exits with status 1. For HTTPS, verify the account associated with Git's configured push credential; `gh api user --jq .login` is suitable only when Git uses that same GitHub CLI account.
 
-Use lowercase ASCII, hyphens, and a short outcome-oriented slug. Create from current `origin/main`.
+Use the authenticated login, not the repository owner, `git config user.name`, commit author, or a fixed Justin/Jinyu/agent mapping. If the pushing account cannot be verified, resolve that identity before creating or publishing a branch.
+
+Create a unique branch from current `origin/main`; add a short task suffix if the name already exists. Re-check the account before pushing. If the pushing account changes, create a new correctly prefixed branch containing the intended commits and record the handoff; preserve any shared branch. Existing historical branch names remain unchanged.
 
 ## Start checklist
 

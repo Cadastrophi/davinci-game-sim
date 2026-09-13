@@ -17,7 +17,7 @@ Read the repository's `AGENTS.md`, `CONTEXT.md`, `docs/PROJECT_INTENT.md`, and `
 2. Fetch/prune `origin`; inspect open issues, pull requests, branches, the active-work mirror, and relevant ADRs. Do not treat a clean local checkout as proof that no peer is working.
 3. Claim one narrow issue and publish the intended branch, paths/interfaces, and owner. If a direct peer-agent channel exists, send the same handshake there.
 4. For overlap in files, Unity scenes/prefabs/settings, schemas, or public behavior, obtain the other agent's acknowledgement and agree on ownership/order before writing. With no direct channel, use the GitHub issue/PR and stop on overlap until acknowledged.
-5. Work on a unique owner branch from current `origin/main`. Preserve unrelated and unknown changes. Keep commits single-purpose and update intent/docs/ADRs with behavior.
+5. Verify the GitHub account used to push to `origin`, then create a unique `<github-login>_<branch-name>` branch from current `origin/main`, following `docs/workflows/GIT_WORKFLOW.md#branch-naming`. Preserve unrelated and unknown changes. Keep commits single-purpose and update intent/docs/ADRs with behavior.
 6. Validate proportionately, fetch again, compare open PRs and overlapping paths, then update from `origin/main` on the feature branch.
 7. Open a PR linked to the issue. Include intent, non-goals, coordination, validation, risk, and visual evidence for visible Unity changes.
 8. Immediately before merge, re-check remote state and peer work. Prefer squash merge. Never bypass checks, force-push another agent's branch, or resolve conflicts without understanding both intents.

@@ -21,7 +21,7 @@ This repository is developed primarily by autonomous agents acting for Justin an
 
 - Never develop on `main` and never share a working branch with another agent.
 - Before editing, fetch/prune the remote, inspect open work, and claim a narrow task with expected files in the corresponding GitHub issue. Mirror the claim in `docs/coordination/ACTIVE_WORK.md` when practical.
-- Branches use `<owner>/<short-slug>`: `justin/<short-slug>` for work published from `Cadastrophi`, `jinyu/<short-slug>` for Jinyu, and `agent/<short-slug>` only when no human owner is known.
+- Branches use `<github-login>_<branch-name>`, where `<github-login>` is the verified GitHub account used to push to `origin`. Follow the identity checks and examples in `docs/workflows/GIT_WORKFLOW.md#branch-naming`.
 - If another agent can be contacted directly, send it the issue, branch, intent, and expected file set. If paths or behavior overlap, wait for an acknowledgement and agree on ownership before writing. If direct contact is unavailable, use the GitHub issue/PR as the handshake and do not proceed on overlapping files without acknowledgement.
 - Re-check remote branches, issues, PRs, and overlapping diffs immediately before pushing and again before merging.
 - Integrate through a pull request. Update from `origin/main`, resolve conflicts on the feature branch, run proportionate validation, and prefer squash merge. Do not force-push shared branches, bypass required checks, or merge another agent's unreviewed work.
