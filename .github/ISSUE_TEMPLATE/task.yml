@@ -1,0 +1,53 @@
+name: Agent task
+description: Claim a scoped task before an agent begins work
+title: "[Task]: "
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the user-visible or system outcome, not an implementation guess.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and non-goals
+      description: State what is included and explicitly excluded.
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: Human owner and agent
+      placeholder: "Justin / Codex"
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Planned branch
+      placeholder: "justin/short-slug"
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Expected paths and interfaces
+      description: List likely files, scenes, prefabs, settings, schemas, or public contracts.
+    validations:
+      required: true
+  - type: textarea
+    id: coordination
+    attributes:
+      label: Concurrent work checked
+      description: Link related issues/PRs and record overlap acknowledgement.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance evidence
+      description: Tests, manual checks, screenshots, or measurable criteria.
+    validations:
+      required: true

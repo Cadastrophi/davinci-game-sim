@@ -1,0 +1,3 @@
+[submodule "references/idp-unity-simulation"]
+	path = references/idp-unity-simulation
+	url = git@github.com:Charly2312/idp-unity-simulation.git
