@@ -124,3 +124,13 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Constraints:** Preserve the existing contents and release state of both `dev` and `prod`; apply this maintenance change to each without promoting unrelated dev-only commits.
 - **Acceptance evidence:** Neither branch tracks `.agents/skills/` or `docs/skills/INSTALLED_SKILLS.md`; current agent guidance points to device-level skills; repository-local skill paths are ignored.
 - **Supersedes:** The repository-local skill portion of the 2026-09-13 repository governance bootstrap entry. That earlier entry remains historical evidence.
+
+
+## 2026-09-13 — Add production CI without feature promotion
+
+Justin requested automated tests/builds for dev and prod while holding application promotion for unavailable hardware verification. Add the same pinned GitHub Actions workflow to prod: lockfile install, existing tests, typecheck/build, and downloadable dist artifacts. No runtime, dependency, submodule or deployment changes. Pitch and first-person changes remain deferred. New behavioral tests are not approved.
+
+
+## 2026-09-13 — Validate configured branches and preserve promotion ancestry
+
+Both CI PRs and post-merge push checks passed; dev is GitHub default and dev/prod have required PR/CI protections. Reconcile the CI-only prod commit into dev using a merge commit so future release promotion preserves ancestry. Application code remains unchanged. Keep main intact for the user's requested readiness update; hardware verification blocks release promotion, not redundant-branch retirement. Final evidence: docs/workflows/MERGE_READINESS.md.
