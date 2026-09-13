@@ -17,6 +17,15 @@ describe('protected obstacle route', () => {
     const retreat = t.step(frame(600), 600); expect(retreat.applied.contactIds).toEqual([]);
     expect(t.step(frame(700, { requestedPose: pose([35, 24, 0]) }), 700).exercise.contactEpisodes).toBe(2);
   });
+  it('publishes H-compatible unavailable poses after collision for Space/resume/rebase', () => {
+    const initial: ToolPose = { positionMm: [0, 24, 0], direction: null, directionKind: 'unavailable' };
+    const t = createTraining(initial); t.start('obstacle', 0);
+    const state = t.step(frame(0, { requestedPose: { ...initial, positionMm: [35, 24, 0] } }), 0);
+    expect(state.applied.mismatch).toBe(true); expect(state.applied.pose.directionKind).toBe('unavailable');
+    expect(state.applied.pose.direction).toBeNull();
+    const held = t.step(frame(100, { mode: 'camera', frozenPose: state.applied.pose, requestedPose: state.applied.pose }), 100);
+    expect(held.applied.pose).toEqual(state.applied.pose);
+  });
   it('completes the legal route around fixed boxes without contact', () => {
     const t = createTraining(); t.start('obstacle', 0);
     let now = 0, state = t.step(frame(0), 0);
