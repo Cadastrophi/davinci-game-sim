@@ -53,3 +53,7 @@ App integration also owns the small UI selection seam after dashboard handoff: d
 ## 2026-09-13 — Constrained incision demonstration (#27)
 
 The five core modes and input composition passed combined tests/build and independent reviews before incision work began. Implement the user's accepted limited seam demonstration: applied-tip contact along a finite20-segment50mm seam opens actual pre-tessellated geometry. Patch half-width15mm, surfacey18mm, contact corridorz±2mm and depth0–3mm are disclosed implementation defaults. Protected structures remain blocking; no cuts during pause/staleness/Space or across interrupted strokes. This is neither arbitrary mesh cutting nor a biomechanical model. E owns additive DTO/UI integration, training worker owns contact/progress, scene worker owns geometry. Enable only after tests and browser verification before06:31UTC feature freeze.
+
+## 2026-09-13 — Shift controller recenter (#31)
+
+User requests Shift held to recenter the controller only, freezing camera and applied instrument position/direction until release. Implement in E app routing using existing input pause/resume, without changing H input contracts. Shift takes precedence over Space; release rebases at the applied pose. Dwell/cutting and elapsed exercise time pause during recenter. Staleness, source changes, disconnect, blur or explicit pause cancel release-to-resume; both Shift keys and native setup typing remain correct. Verify real-facade no-jump behavior and keyboard/interruption cases.
