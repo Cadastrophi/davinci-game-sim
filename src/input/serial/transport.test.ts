@@ -208,4 +208,16 @@ describe('receive-only serial transport', () => {
     expect((await h.transport.connect(id)).ok).toBe(true);
     await h.transport.dispose();
   });
+
+  it('clears a cleanup error after a successful repeated dispose', async () => {
+    const h = setup(); await h.connect();
+    h.port.close.mockRejectedValueOnce(new Error('Transient dispose failure'));
+    await h.transport.dispose();
+    expect(h.transport.getStatus()).toMatchObject({ connection: 'error', error: 'Serial cleanup failed: Transient dispose failure' });
+    await h.transport.dispose();
+    expect(h.port.close).toHaveBeenCalledTimes(2);
+    expect(h.transport.getStatus()).toMatchObject({ connection: 'disconnected', error: null });
+    await h.transport.dispose();
+    expect(h.port.close).toHaveBeenCalledTimes(2);
+  });
 });
