@@ -40,3 +40,12 @@ Append one compact entry for each non-trivial task. Do not rewrite earlier entri
 - E publishes one renderer-independent facade and runnable localhost baseline; H consumes it and owns input implementation. Missing chat ACK does not block E development; compatibility remains a reviewed integration gate.
 - Scope: package/build configuration, shared DTOs, labelled visual replay bootstrap, camera application helper and seed fixtures. No serial parser or calibration implementation, and no claims of delivered modes or live hardware acceptance.
 - Validation: typecheck, fixture tests, production build and browser replay check; independent current-head review before merge.
+
+## 2026-09-13 — Concurrent experience and input implementation (#7, #9, #10, #12)
+
+- Justin requests continued Master E implementation alongside H on a separate device; agent coordination is not a user-operated prerequisite.
+- H confirmed baseline 34baec7 and launch-v1.1 in issue #1. H owns serial (#8), mapping (#11), providers/facade (#13); E owns scene (#7), training (#9), UI (#10) and app composition (#12), plus serialized reviewed integration.
+- App scope: route UI and focus/Space events through shared facades, use collision-applied pose for transitions, apply cumulative camera displacement once, and latch interruptions until deliberate resume. H owns raw mock/replay generation and calibration.
+- Acceptance: independent slice reviews, deterministic lifecycle/collision/camera tests, typecheck/build and integrated localhost browser verification. Live hardware evidence remains pending on H's device.
+
+App integration also owns the small UI selection seam after dashboard handoff: desired source controls which setup fields are shown; telemetry continues to report the actual connected/input source. Serial setup must be selectable before a port connection changes input provenance. Interactive mock keyboard controls use H's manual source and clock; E does not implement calibration or packet generation.
