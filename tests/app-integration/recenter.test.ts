@@ -44,14 +44,14 @@ describe('Shift recenter with real input and training', () => {
     h.controller.recenterUp(); h.controller.tick();
     expectPose(h.state().applied.pose, pose);
     expect(h.state().cameraPositionMm).toEqual(camera);
-    h.move([1, 0, 0]);
+    h.move([0, 1, 0]);
     expect(h.state().applied.pose.positionMm[0]).toBeCloseTo(pose.positionMm[0] + 1, 10);
     await h.dispose();
   });
 
   it('rebases at collision-applied position instead of the blocked request', async () => {
-    const h = setup(); await h.controller.command({ type: 'start', mode: 'free' }); h.move([40, -2, 0]);
-    await h.controller.command({ type: 'start', mode: 'incision' }); h.move([-65, 0, 0]);
+    const h = setup(); await h.controller.command({ type: 'start', mode: 'free' }); h.move([0, 40, -2]);
+    await h.controller.command({ type: 'start', mode: 'incision' }); h.move([0, -65, 0]);
     expect(h.state().applied.mismatch).toBe(true);
     const pose = h.state().applied.pose;
     h.controller.recenterDown(); h.move([100, 20, 10], 40, 20); h.controller.recenterUp(); h.controller.tick();

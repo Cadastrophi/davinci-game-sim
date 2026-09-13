@@ -62,7 +62,7 @@ export function createUi(
         <details class="training-calibration"><summary>Mapping & calibration</summary>
           <p class="training-help">Each virtual axis maps to one raw axis. Center the controller, then apply.</p>
           <div class="training-map-head"><span>Virtual</span><span>Raw axis</span><span>Sign</span><span>Gain</span></div>
-          ${['X', 'Y', 'Z'].map((axis, i) => `<div class="training-map-row"><span>${axis}</span><select aria-label="${axis} raw axis" data-axis="${i}">${['X', 'Y', 'Z'].map((raw, j) => `<option value="${j}" ${i === j ? 'selected' : ''}>${raw}</option>`).join('')}</select><select aria-label="${axis} sign" data-sign="${i}"><option value="1">+</option><option value="-1">−</option></select><input aria-label="${axis} gain" data-gain="${i}" type="number" min="0.01" max="10" step="0.1" value="1"></div>`).join('')}
+          ${['X', 'Y', 'Z'].map((axis, i) => `<div class="training-map-row"><span>${axis}</span><select aria-label="${axis} raw axis" data-axis="${i}">${['X', 'Y', 'Z'].map((raw, j) => `<option value="${j}" ${DEFAULT_CALIBRATION.axisOrder[i] === j ? 'selected' : ''}>${raw}</option>`).join('')}</select><select aria-label="${axis} sign" data-sign="${i}"><option value="1" ${DEFAULT_CALIBRATION.axisSigns[i] === 1 ? 'selected' : ''}>+</option><option value="-1" ${DEFAULT_CALIBRATION.axisSigns[i] === -1 ? 'selected' : ''}>−</option></select><input aria-label="${axis} gain" data-gain="${i}" type="number" min="0.01" max="10" step="0.1" value="${DEFAULT_CALIBRATION.translationGain[i]}"></div>`).join('')}
           <p class="training-form-error" data-calibration-error role="alert" hidden></p>
         </details>
         <button type="button" class="training-calibrate" data-command="calibrate">Calibrate / set center <span>⌖</span></button>
@@ -85,6 +85,7 @@ export function createUi(
       </div>
     </section>`;
   root.append(shell);
+  shell.querySelectorAll<HTMLSelectElement>('[data-axis]').forEach((select, i) => { select.value = String(DEFAULT_CALIBRATION.axisOrder[i]); });
   const get = <T extends HTMLElement = HTMLElement>(selector: string): T => shell.querySelector<T>(selector)!;
   const text = (selector: string, value: string) => { const element = get(selector); if (element.textContent !== value) element.textContent = value; };
   const listen = (selector: string, event: string, handler: EventListener) => get(selector).addEventListener(event, handler, { signal: abort.signal });

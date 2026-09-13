@@ -70,7 +70,7 @@ export interface CalibrationConfig {
   readonly pitchSign: 1 | -1;
   readonly directionKind: 'unavailable' | 'virtual-mapped';
 }
-export const DEFAULT_CALIBRATION: CalibrationConfig = Object.freeze({ axisOrder: [0, 1, 2] as const, axisSigns: [1, 1, 1] as const, translationGain: [1, 1, 1] as const, cameraGain: [1, 1, 1] as const, yawSign: 1, pitchSign: 1, directionKind: 'virtual-mapped' });
+export const DEFAULT_CALIBRATION: CalibrationConfig = Object.freeze({ axisOrder: [1, 2, 0] as const, axisSigns: [1, 1, 1] as const, translationGain: [1, 1, 3] as const, cameraGain: [1, 1, 1] as const, yawSign: 1, pitchSign: 1, directionKind: 'virtual-mapped' });
 /** H implements this facade and exports createInputFacade({now?}) from src/input/index.ts.
  * Mapping mutations require a fresh sample, return explicit failure otherwise.
  * Stale/disconnect latches pause; only deliberate resume/calibrate rebases it.

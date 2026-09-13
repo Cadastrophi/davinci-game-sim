@@ -27,6 +27,13 @@ function expectVector(actual: Vec3 | null, expected: Vec3) {
 }
 
 describe('calibrated input mapping', () => {
+  it('maps the default virtual axes from real Y, Z, X with gains 1, 1, 3', () => {
+    const h = setup();
+    h.start();
+    h.send({ positionMm: [2, 3, 5] });
+    expectVector(h.frame().requestedPose.positionMm, [3, 23, 6]);
+  });
+
   it('starts paused and requires fresh input and explicit calibration', () => {
     const h = setup();
     expect(h.frame()).toMatchObject({ mode: 'paused', fresh: false });
@@ -120,7 +127,7 @@ describe('calibrated input mapping', () => {
   it('rejects arithmetic overflow and preserves a finite last pose', () => {
     const h = setup();
     h.start({ ...DEFAULT_CALIBRATION, translationGain: [Number.MAX_VALUE, 1, 1] });
-    expect(h.send({ positionMm: [2, 0, 0] })).toMatchObject({ ok: false, reason: 'mapping-overflow' });
+    expect(h.send({ positionMm: [0, 2, 0] })).toMatchObject({ ok: false, reason: 'mapping-overflow' });
     expect(h.frame()).toMatchObject({ mode: 'paused', requestedPose: INITIAL_TOOL_POSE });
   });
 
@@ -145,7 +152,7 @@ describe('camera anchors and deliberate recovery', () => {
     h.send({ positionMm: [105, 2, 3], yawDeg: 80, pitchDeg: 40 });
     const held = h.frame();
     expect(held).toMatchObject({ mode: 'camera', frozenPose: blocked, requestedPose: blocked });
-    expectVector(held.cameraOffsetMm, [10, 6, 12]);
+    expectVector(held.cameraOffsetMm, [4, 9, 20]);
     for (let i = 0; i < 100; i++) expect(h.frame()).toEqual(held);
     expect(h.mapping.enterCameraMode(blocked)).toMatchObject({ ok: false, reason: 'wrong-mode' });
     expect(h.frame().cameraSession).toBe(session);
@@ -153,7 +160,7 @@ describe('camera anchors and deliberate recovery', () => {
     expect(h.frame().requestedPose).toEqual(blocked);
     expect(h.frame().cameraOffsetMm).toEqual([0, 0, 0]);
     h.send({ positionMm: [106, 2, 3], yawDeg: 80, pitchDeg: 40 });
-    expectVector(h.frame().requestedPose.positionMm, [41, 0, 0]);
+    expectVector(h.frame().requestedPose.positionMm, [40, 0, 3]);
     expectVector(h.frame().requestedPose.direction, [1, 0, 0]);
   });
 
@@ -226,7 +233,7 @@ describe('camera anchors and deliberate recovery', () => {
     expect(h.mapping.resume(reset).ok).toBe(true);
     expect(h.frame().requestedPose).toEqual(reset);
     h.send({ positionMm: [201, 0, 0] });
-    expectVector(h.frame().requestedPose.positionMm, [1, 10, 0]);
+    expectVector(h.frame().requestedPose.positionMm, [0, 10, 3]);
   });
 });
 
@@ -251,7 +258,7 @@ describe('input sessions, chronology and isolation', () => {
     expect(h.frame()).toMatchObject({ mode: 'paused', source: 'replay', pauseReason: 'source-changed' });
     h.mapping.resume(INITIAL_TOOL_POSE);
     h.send({ source: 'replay', sequence: 1, positionMm: [101, 0, 0] });
-    expectVector(h.frame().requestedPose.positionMm, [1, 18, 0]);
+    expectVector(h.frame().requestedPose.positionMm, [0, 18, 3]);
   });
 
   it('requires increasing sequence and nondecreasing receive time within a session', () => {
@@ -310,7 +317,7 @@ describe('input sessions, chronology and isolation', () => {
     Reflect.set(frameCopy.requestedPose.direction!, '0', 999);
     Reflect.set(frameCopy.cameraOffsetMm, '0', 999);
     h.send({ positionMm: [2, 2, 3] });
-    expectVector(h.frame().requestedPose.positionMm, [5, 5, 6]);
+    expectVector(h.frame().requestedPose.positionMm, [4, 5, 7]);
     expectVector(h.frame().requestedPose.direction, [0, 0, -1]);
     expectVector(h.frame().cameraOffsetMm, [0, 0, 0]);
     h.mapping.enterCameraMode(pose([8, 9, 10]));
