@@ -75,7 +75,7 @@ describe('home calibration and control feedback', () => {
   it('returns home when resetting from a protected-mode collision state', async () => {
     const h = setup();
     await h.controller.command({ type: 'start', mode: 'incision' });
-    h.move([40, 0, 0]);
+    h.move([0, 40, 0]);
     expect(h.state().applied.mismatch).toBe(true);
     expect(h.state().applied.pose.positionMm).not.toEqual(INITIAL_TOOL_POSE.positionMm);
 

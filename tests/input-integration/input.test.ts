@@ -34,7 +34,7 @@ describe('composed input facade', () => {
     for (let i = 0; i < 100; i++) {
       const frame = input.snapshot(now()).control;
       expect(frame.requestedPose).toEqual(applied);
-      expect(frame.cameraOffsetMm).toEqual([5, 2, 3]);
+      expect(frame.cameraOffsetMm).toEqual([2, 3, 5]);
     }
     expect(input.exitCameraMode(applied).ok).toBe(true);
     expect(input.snapshot(now()).control.requestedPose.positionMm).toEqual(applied.positionMm);
