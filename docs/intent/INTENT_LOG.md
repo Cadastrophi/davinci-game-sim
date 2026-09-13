@@ -57,3 +57,12 @@ The five core modes and input composition passed combined tests/build and indepe
 ## 2026-09-13 — Shift controller recenter (#31)
 
 User requests Shift held to recenter the controller only, freezing camera and applied instrument position/direction until release. Implement in E app routing using existing input pause/resume, without changing H input contracts. Shift takes precedence over Space; release rebases at the applied pose. Dwell/cutting and elapsed exercise time pause during recenter. Staleness, source changes, disconnect, blur or explicit pause cancel release-to-resume; both Shift keys and native setup typing remain correct. Verify real-facade no-jump behavior and keyboard/interruption cases.
+
+## 2026-09-13 — Reliable home controls and visible UART stream (#33)
+
+- **Requested by:** Justin.
+- **Outcome:** Treat the raw pose held during Calibrate / set center as neutral at the simulator home pose; make Reset return the instrument and camera home; make Pause and Resume update reliably; expose the live UART/raw sample stream at the top right.
+- **In scope:** App control anchoring and immediate command feedback, training reset pose ownership if required, compact raw-sample telemetry, focused tests, and operator documentation.
+- **Out of scope:** UART framing/protocol changes, serial transmit, gameplay or scene redesign, and changes to #32's Shift-held recenter semantics.
+- **Constraints:** Preserve the transport-independent input boundary and integrate after merged PR #32. A stale or missing sample must still prevent unsafe rebase/resume.
+- **Acceptance evidence:** Deterministic red/green integration tests for center/reset and rapid pause/resume, formatter/UI evidence for live raw values, full tests/typecheck/build, and browser verification.
