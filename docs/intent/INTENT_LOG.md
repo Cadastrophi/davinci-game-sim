@@ -33,3 +33,10 @@ Append one compact entry for each non-trivial task. Do not rewrite earlier entri
 - **Constraints:** Preserve launch-v1 at package SHA `397f4fa661d604c1ecba0b1dda8d88d92ca77c65`, integrated through PR #2 at `aef2b6756d789d6205fc5a04f4b1d03e213e6996`. Modes 1–5 precede constrained interactive incision. Delivery is localhost for this run; deadline and feature freeze are recorded in [run status](../launch/RUN_STATUS.md). Preserve historical records and the UART-only reference boundary. ADR 0002 remains reserved for peer research.
 - **Acceptance evidence:** Shared docs consistently direct agents to the accepted browser specification and current run status; local links and diff checks pass; independent review and Master E publication remain required.
 - **Supersedes:** The Unity-only product direction and bootstrap-only phase in the earlier governance entry for current implementation. That entry remains the historical record of its task. The prompt-preparation intent remains in [launch README](../launch/README.md#intent-and-evidence).
+
+## 2026-09-13 — P0 common browser baseline (#4)
+
+- Requested by Justin: proceed with E implementation concurrently with H on the other device, without making the user operate agent acknowledgements.
+- E publishes one renderer-independent facade and runnable localhost baseline; H consumes it and owns input implementation. Missing chat ACK does not block E development; compatibility remains a reviewed integration gate.
+- Scope: package/build configuration, shared DTOs, labelled visual replay bootstrap, camera application helper and seed fixtures. No serial parser or calibration implementation, and no claims of delivered modes or live hardware acceptance.
+- Validation: typecheck, fixture tests, production build and browser replay check; independent current-head review before merge.

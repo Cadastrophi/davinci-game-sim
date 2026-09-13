@@ -35,3 +35,9 @@ sysinfo.txt
 
 # Local agent scratch space (shared skills remain tracked)
 .scratch/
+
+# Browser application
+node_modules/
+dist/
+.vite/
+coverage/

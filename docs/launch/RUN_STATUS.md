@@ -21,3 +21,9 @@ Updated 2026-09-13 for D0. [Issue #1](https://github.com/Cadastrophi/davinci-gam
 P0 is not delivered by this documentation change. E/H must agree exact exported facades and seed fixtures, review the baseline and record the same merged baseline SHA before dependent writers start. Preserve the review and ownership gates in [COORDINATION](COORDINATION.md).
 
 No live hardware success, working modes or measured performance are asserted here. Record those results with exact source SHA and distinguish mock/replay evidence from device observations as runnable increments arrive.
+
+## Concurrent execution clarification
+
+Justin clarified during implementation that E and H should build concurrently on separate devices and that the user should not operate agent acknowledgements. E publishes the shared baseline contract; missing chat ACK does not block E development. E retains sole merging, independent reviews, exclusive ownership and interface compatibility validation at integration. This supersedes pre-writing/pre-worker ACK requirements for this run; consumers use the published merged baseline SHA.
+
+D0 merged in PR #5. P0 issue #4 establishes launch-v1.1 DTOs and a temporary labelled visual replay. The temporary provider has no calibration or serial behavior and is replaced when H's input facade lands.
