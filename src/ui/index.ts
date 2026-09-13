@@ -72,8 +72,13 @@ export function createUi(
   const listen = (selector: string, event: string, handler: EventListener) => get(selector).addEventListener(event, handler, { signal: abort.signal });
   let currentMode: ExerciseMode = 'free';
   let previousSource: Source | undefined;
+  let selectedSource: Source = 'mock';
   shell.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach(button => button.addEventListener('click', () => dispatch({ type: 'start', mode: button.dataset.mode as ExerciseMode }), { signal: abort.signal }));
-  listen('[data-source]', 'change', () => dispatch({ type: 'source', source: get<HTMLSelectElement>('[data-source]').value as Source }));
+  listen('[data-source]', 'change', () => {
+    selectedSource = get<HTMLSelectElement>('[data-source]').value as Source;
+    get('[data-serial]').hidden = selectedSource !== 'serial';
+    dispatch({ type: 'source', source: selectedSource });
+  });
   listen('[data-trail]', 'change', () => dispatch({ type: 'trail', enabled: get<HTMLInputElement>('[data-trail]').checked }));
   for (const type of ['pause', 'resume', 'reset', 'disconnect'] as const) listen(`[data-command="${type}"]`, 'click', () => dispatch({ type }));
   listen('[data-command="connect"]', 'click', () => dispatch({ type: 'connect', settings: {
@@ -127,9 +132,12 @@ export function createUi(
       get('.training-results').hidden = e.phase !== 'completed';
       text('[data-result-summary]', `${e.targetCount} targets · ${elapsed} · ${e.contactEpisodes} contacts · ${e.pathMm.toFixed(0)} mm path`);
       get<HTMLInputElement>('[data-trail]').checked = snapshot.showTrail;
-      if (status.source !== previousSource) { get<HTMLSelectElement>('[data-source]').value = status.source; previousSource = status.source; }
-      get('[data-serial]').hidden = status.source !== 'serial';
-      text('[data-source-help]', status.source === 'serial' ? 'Physical telemetry · select your device to connect.' : status.source === 'replay' ? 'Replay input · synthetic / recorded motion, not live hardware.' : 'Mock input · simulated controller, not live hardware.');
+      if (previousSource === undefined || (status.source !== previousSource && status.connection === 'connected')) {
+        selectedSource = status.source; get<HTMLSelectElement>('[data-source]').value = selectedSource;
+      }
+      previousSource = status.source;
+      get('[data-serial]').hidden = selectedSource !== 'serial';
+      text('[data-source-help]', selectedSource === 'serial' ? 'Select your physical controller, then calibrate and resume.' : selectedSource === 'replay' ? '40-second synthetic replay. Calibrate and resume; choose Replay again to restart.' : 'Click the field. WASD moves across it, Q/E moves down/up, arrows change direction. Calibrate, then Resume.');
       text('[data-connection]', `${status.source.toUpperCase()} / ${status.connection.toUpperCase()}`);
       text('[data-device]', status.deviceLabel || 'No device');
       text('[data-rate]', `${status.packetRateHz.toFixed(0)} Hz`);
