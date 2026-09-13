@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
@@ -11,6 +13,13 @@
     "test": "vitest run",
     "preview": "vite preview --host 127.0.0.1"
   },
-  "dependencies": { "@babylonjs/core": "9.26.0" },
-  "devDependencies": { "typescript": "5.9.3", "vite": "8.3.0", "vitest": "5.0.0" }
+  "dependencies": {
+    "@babylonjs/core": "9.26.0"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.14.5",
+    "typescript": "5.9.3",
+    "vite": "8.3.0",
+    "vitest": "5.0.0"
+  }
 }

@@ -1,4 +1,4 @@
-import { CAMERA_HOME, STALE_AFTER_MS } from '../contracts';
+import { CAMERA_HOME, INITIAL_TOOL_POSE, STALE_AFTER_MS } from '../contracts';
 import type { ControlFrame, InputFacade, InputSnapshot, SceneFacade, Source, TrainingFacade, TrainingState, UiCommand, UiFacade, Vec3 } from '../contracts';
 import { cameraPosition } from './camera';
 
@@ -131,10 +131,14 @@ export function createController({ input, training, scene, ui, now, onSource, st
       return;
     }
     switch (command.type) {
-      case 'pause': pause('Paused by you'); break;
+      case 'pause':
+        pause('Paused by you');
+        tick();
+        break;
       case 'resume': {
         const result = input.resume(state.applied.pose);
         if (!result.ok) message = result.reason;
+        tick();
         break;
       }
       case 'start': {
@@ -151,14 +155,16 @@ export function createController({ input, training, scene, ui, now, onSource, st
         training.reset(now());
         try { training.start(state.exercise.mode, now()); }
         catch (error) { message = connectionError(error); break; }
-        const result = input.resume(state.applied.pose);
+        const result = input.resume(INITIAL_TOOL_POSE);
         if (!result.ok) { message = result.reason; training.pause(result.reason); }
+        tick();
         break;
       }
       case 'calibrate': {
         pause('Calibrating');
-        const result = input.calibrate(command.config, state.applied.pose);
+        const result = input.calibrate(command.config, INITIAL_TOOL_POSE);
         if (!result.ok) message = result.reason;
+        tick();
         break;
       }
       case 'trail': showTrail = command.enabled; break;
