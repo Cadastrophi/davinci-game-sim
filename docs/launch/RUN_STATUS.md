@@ -37,3 +37,7 @@ Synthetic checks cover clock-driven staleness, cumulative camera displacement, a
 Core modes are merged through navigation PR #21 (`3805bb2`). Serial PR #20 is merged at `6045b1f`; E independently ran parser/transport tests, typecheck/build and a combined current-main suite. H mapping/facade corrections are combined on E's app feature branch for verification, pending their PR integration.
 
 App #12 now composes real H input with training/scene/UI. Independent app and UI reviews found no blockers; 141 combined tests pass and production build passes (Babylon chunk-size warning remains). Browser mock checks verified rendering, keyboard movement and serial-setup selection before connection. A real-facade integration test verifies world-pose freeze, idempotent cumulative pan, release direction/position rebase and explicit resume after staleness. See LOCAL_DEMO.md for operation. No live hardware result is asserted.
+
+## Core delivery and revised priority
+
+Core app PR #26 merged at `7d6de67`, including all five modes and H input mapping/facade PRs #22/#23. H was notified to fetch and run the localhost MVP before 06:00 UTC. At 05:55 UTC H relayed the user's revised priority: roughly 60 minutes remaining and an integrated hardware-testable MVP within 12 minutes (06:07 UTC). Core delivery met that integration target. Incision remains a separate increment and does not block hardware testing. Live device acceptance is still pending.
