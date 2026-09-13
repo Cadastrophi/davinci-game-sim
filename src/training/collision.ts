@@ -10,6 +10,10 @@ const dot = (a: Vec3, b: Vec3): number => axes.reduce<number>((n, i) => n + a[i]
 const mix = (a: Vec3, b: Vec3, t: number): Vec3 => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 function unit(v: Vec3): Vec3 { const n = Math.hypot(...v); return n > 1e-12 ? [v[0] / n, v[1] / n, v[2] / n] : [0, 0, -1]; }
 function direction(p: ToolPose): Vec3 { return unit(p.direction ?? [0, 0, -1]); }
+/** Sweep directions are internal geometry, never evidence that unavailable input became measured. */
+function publishedPose(pose: ToolPose): ToolPose {
+  return { ...structuredClone(pose), direction: pose.directionKind === 'unavailable' ? null : pose.direction === null ? null : [...pose.direction] };
+}
 function arc(a: Vec3, b: Vec3): { angle: number; tangent: Vec3 } {
   const c = Math.max(-1, Math.min(1, dot(a, b)));
   const angle = Math.acos(c);
@@ -79,7 +83,7 @@ export function createCollision(initial: ToolPose) {
       const contacts = new Set(obstacles.filter(o => clearance(pose, o) <= 0.03 || (active.has(o.id) && clearance(pose, o) < RELEASE_MM)).map(o => o.id));
       if (contacts.size > 0 && active.size === 0) episodes++;
       active = contacts;
-      return { pose: structuredClone(pose), requestedPose: structuredClone(requested), contactIds: [...active], contactEpisodes: episodes, mismatch: distance(pose.positionMm, requested.positionMm) > 1e-6 || distance(direction(pose), direction(requested)) > 1e-6 };
+      return { pose: publishedPose(pose), requestedPose: publishedPose(requested), contactIds: [...active], contactEpisodes: episodes, mismatch: distance(pose.positionMm, requested.positionMm) > 1e-6 || distance(direction(pose), direction(requested)) > 1e-6 };
     },
   };
 }
