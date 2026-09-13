@@ -47,3 +47,7 @@ H reported at 06:02 UTC that its hardware-test checkout is pinned to merged `7d6
 ## Incision verification
 
 The sixth mode is enabled after independent training, scene and UI reviews. Combined 157 tests, typecheck and production build pass. Chrome mock walkthrough visibly opened 50% then 100% of the predefined seam; protected contact stopped the tool and Reset restored closed geometry/0% coverage. Browser console had no errors. The scene material was darkened after visual inspection to retain tissue color under the existing lights. This is a constrained pre-tessellated contact demonstration, not arbitrary cutting or clinical validation. Serial cleanup PR #25 merged at `71f7139` after independent 15-test transport verification.
+
+## Shift recenter follow-up (#31)
+
+User requested controller-only recenter on Shift. E app routing freezes camera and applied tool pose until release and rebases through the unchanged H input facade. Shift interrupts Space; stale/disconnected/focus-loss interruptions require explicit resume. Recenter pauses dwell, cutting and exercise time. Independent review found no blockers; all 168 tests and production build pass, including 11 focused real-facade/key-routing cases. This does not assert live hardware verification.

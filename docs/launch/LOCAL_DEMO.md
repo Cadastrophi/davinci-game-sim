@@ -8,6 +8,8 @@ The default source is an interactive synthetic controller. Click the field to fo
 
 Hold Space and move to pan/dolly the camera. Tool world position and direction remain fixed; camera orientation and FOV remain fixed. Release keeps the new view and rebases the tool without a jump. Space does not capture typing or setup controls.
 
+Hold Shift to reposition/recenter the controller while both camera and instrument stay fixed. Release Shift to resume without a position or direction jump. Shift takes precedence over Space; press Space again afterward to adjust the camera. Recenter pauses exercise time, dwell and cutting. Stale input, source changes, disconnect or lost focus cancel automatic release-to-resume; release Shift and explicitly Resume after recovery. Shift in setup fields retains normal typing behavior.
+
 Select a drill to start. Reach requires a continuous 0.5-second hold within 10 mm; alignment also requires direction within 10 degrees. Obstacle navigation blocks the short blade against protected volumes and counts one contact episode until separation. Camera navigation requires a new camera adjustment of at least 5 mm requested displacement before each target acquisition. Protected volumes are non-cuttable.
 
 Calibrate / set center anchors the selected source at the current applied tool pose. Resume also rebases after a pause. Reset clears the current exercise and restores the default camera, while preserving the applied tool pose. If an obstacle drill cannot start because the blade overlaps a protected volume, use Free practice to move clear and retry.

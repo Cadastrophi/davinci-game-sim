@@ -79,7 +79,7 @@ export function createUi(
         <div class="training-metrics" aria-label="Session measurements">
           <div><span>TIME</span><strong data-elapsed>0:00.0</strong></div><div><span>POSITION ERROR</span><strong data-position>—</strong></div><div><span>DIRECTION ERROR</span><strong data-angle>—</strong></div><div><span>PATH</span><strong data-path>0 mm</strong></div><div><span>CONTACTS</span><strong data-contacts>0</strong></div><div><span>STEADINESS</span><strong data-steady>0 mm</strong></div>
         </div>
-        <div class="training-toolbar"><p><kbd>SPACE</kbd> Hold to pan / dolly <span>· Tool stays fixed</span></p><div class="training-button-row"><button type="button" data-command="pause">Pause</button><button type="button" data-command="resume">Resume</button><button type="button" data-command="reset">Reset</button></div></div>
+        <div class="training-toolbar"><p><kbd>SPACE</kbd> Hold to pan / dolly <span>· Tool stays fixed</span><br><kbd>SHIFT</kbd> Hold to recenter controller <span>· Camera and tool stay fixed</span></p><div class="training-button-row"><button type="button" data-command="pause">Pause</button><button type="button" data-command="resume">Resume</button><button type="button" data-command="reset">Reset</button></div></div>
         <footer class="training-telemetry"><span data-connection>DISCONNECTED</span><span data-device>No device</span><span data-rate>0 Hz</span><span data-age>Age —</span><span data-calibration>Uncalibrated</span><span data-frame>Frame —</span><span data-invalid>0 invalid</span></footer>
       </div>
     </section>`;
