@@ -1,5 +1,11 @@
 # Intent log
 
+## 2026-09-13 — Arm design approval preview
+
+Justin requests a separate actual 3D arm preview matching the supplied generated concept and linked SimNow video. Capture first-person views and obtain explicit visual approval before further game integration. Scope is preview-only model and controls; do not change the simulator entry point or merge this work. The generated raster is an appearance reference, not a 3D asset.
+
+Justin approved this model and first-person placement, then explicitly requested pausing work and pushing all preview work to `Cadastrophi_first-person-navigation`. Preserve the standalone preview and review screenshots on that branch. Further game integration and merging remain paused.
+
 Append one compact entry for each non-trivial task. Do not rewrite earlier entries; add a correction that points to the superseded entry.
 
 ## 2026-09-13 — Repository governance bootstrap
