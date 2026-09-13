@@ -27,3 +27,6 @@ Naming: `NNNN-short-title.md`. Status values: `proposed`, `accepted`, `supersede
 ## Index
 
 - `0001-uart-reference-boundary.md` — the external repository is a UART parsing reference only.
+
+- `0002` — reserved for peer research; no record imported by D0.
+- [0003-browser-training-launch.md](0003-browser-training-launch.md) — accepted browser stack, ownership boundary and implementation launch.

@@ -13,7 +13,7 @@ This repository is developed primarily by autonomous agents acting for Justin an
 ## Scope and intent
 
 - Preserve the current task's user intent in `docs/intent/INTENT_LOG.md` before implementation when the request is more than a trivial edit.
-- This repository will become a higher-fidelity Unity simulator inspired by the da Vinci simulator experience. Do not begin game implementation unless the user explicitly requests it.
+- Implementation is authorized for the original browser teleoperation-training game described in `docs/launch/SPEC.md`; read `docs/launch/RUN_STATUS.md` for current delivery constraints and launch gates. The accepted Babylon.js/TypeScript/Vite direction supersedes the former Unity product plan.
 - `references/idp-unity-simulation` is an upstream reference only for UART command parsing and ingestion. Never copy its gameplay, visuals, scene structure, or unrelated architecture into this project.
 - Do not invent product decisions. Record consequential choices as ADRs; record unresolved decisions in `docs/PROJECT_INTENT.md`.
 

@@ -22,3 +22,14 @@ Append one compact entry for each non-trivial task. Do not rewrite earlier entri
 - **Assumptions needing confirmation:**
 - **Acceptance evidence:**
 - **Supersedes / superseded by:**
+
+## 2026-09-13 — Browser implementation launch and shared documentation reconciliation
+
+- **Date / issue:** 2026-09-13; [coordination #1](https://github.com/Cadastrophi/davinci-game-sim/issues/1), [D0 #3](https://github.com/Cadastrophi/davinci-game-sim/issues/3).
+- **Requested by:** Justin; Master E reports the user's relayed Master H acknowledgement and instruction to continue.
+- **Outcome:** Execute the accepted two-master browser launch with bounded workers and incremental reviewed PRs; reconcile the former Unity bootstrap wording before the common application baseline.
+- **In scope:** Shared documentation, domain terms, accepted browser ADR and run status. Master E owns experience, contracts, app wiring and sole serialized integration; Master H owns input, calibration, mapping and providers.
+- **Out of scope for D0:** Application code, firmware/device changes, peer research integration and edits to the original six launch-package files.
+- **Constraints:** Preserve launch-v1 at package SHA `397f4fa661d604c1ecba0b1dda8d88d92ca77c65`, integrated through PR #2 at `aef2b6756d789d6205fc5a04f4b1d03e213e6996`. Modes 1–5 precede constrained interactive incision. Delivery is localhost for this run; deadline and feature freeze are recorded in [run status](../launch/RUN_STATUS.md). Preserve historical records and the UART-only reference boundary. ADR 0002 remains reserved for peer research.
+- **Acceptance evidence:** Shared docs consistently direct agents to the accepted browser specification and current run status; local links and diff checks pass; independent review and Master E publication remain required.
+- **Supersedes:** The Unity-only product direction and bootstrap-only phase in the earlier governance entry for current implementation. That entry remains the historical record of its task. The prompt-preparation intent remains in [launch README](../launch/README.md#intent-and-evidence).

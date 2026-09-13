@@ -1,45 +1,36 @@
 # Project intent
 
-## Captured request
+## Accepted direction
 
-Two collaborators are building at a hackathon using agents concurrently and do not intend to operate Git flows manually. The repository must make intent, ownership, coordination, branching, review, and merging explicit enough that agents can perform those mechanics safely.
-
-The product direction is a Unity simulator with substantially stronger graphics and environment quality than the existing simple prototype, taking experiential inspiration from a da Vinci simulator/game environment.
+Justin and Jinyu are building an original browser teleoperation-training game with agents handling Git coordination. The user authorized executing the two-master launch: Babylon.js, TypeScript and Vite; an anatomical Aimlabs-style arena; one physical controller and one virtual knife. This supersedes the earlier Unity-only bootstrap direction. The complete behavioral authority is [launch-v1 SPEC](launch/SPEC.md); current delivery/time constraints live in [RUN_STATUS](launch/RUN_STATUS.md).
 
 ## Current phase
 
-Governance and documentation bootstrap only. Do not implement the game until explicitly requested.
+Implementation is authorized. The launch package is integrated through [PR #2](https://github.com/Cadastrophi/davinci-game-sim/pull/2). D0 reconciles shared documentation; the common P0 application baseline still requires the exact interface/fixture acknowledgement and review gates in [COORDINATION](launch/COORDINATION.md) and [CONTRACT](launch/CONTRACT.md). The user's relayed H acknowledgement is recorded as such; it is not a substitute for exact baseline SHA acknowledgement.
 
 ## Goals
 
-- Provide a durable source of truth for product intent and domain language.
-- Make concurrent agent work visible and collision-resistant.
-- Make every change traceable from intent to issue, branch, pull request, validation, and decision.
-- Prepare Unity-specific skills and repository conventions for later implementation.
-- Preserve the UART parsing knowledge from the reference repository behind a clean adapter boundary.
+- Deliver runnable, reviewed increments: free practice, reach-and-hold, direction alignment, obstacle navigation, then camera/navigation drills.
+- Preserve fixed tool world pose during Space pan/dolly and resume through a no-jump rebase.
+- Add constrained, contact-driven tissue separation/deformation after modes 1–5 work and only within the remaining time.
+- Keep telemetry receipt/calibration independent from rendering, collision handling and exercise measurement.
+- Record evidence separately for deterministic mocks, visible interactions and actual connected hardware.
 
-## Non-goals and boundaries
+## Boundaries
 
-- Do not copy game systems, graphics, scenes, assets, or unrelated architecture from `references/idp-unity-simulation`.
-- Do not treat “similar to da Vinci” as permission to copy proprietary assets, code, branding, or protected content.
-- Do not commit Unity-generated caches or build outputs.
-- Do not make raw UART framing a dependency of gameplay or presentation code.
+The application receives immutable hardware telemetry only. It does not command firmware, motors or haptics. Unavailable roll is not a measured orientation component; pose-only input does not establish joint-limit or singularity proximity. Virtual metrics are not physical-arm accuracy or clinical validation.
 
-## Early success signals
+Only UART ingestion evidence may be taken from `references/idp-unity-simulation`; preserve [ADR 0001](adr/0001-uart-reference-boundary.md). Create original assets and scenes and record provenance for sourced/generated artwork. Raster artwork does not replace interactive cutting geometry. Keep generated caches/build outputs out of Git.
 
-- Both agents can identify who owns each active task and which files are likely to change.
-- Work reaches `main` only through a current, validated pull request.
-- A new agent can recover the reason for a change from the issue, intent log, PR, and any ADR.
-- UART input can eventually be translated into transport-independent simulation commands.
+## Success evidence
 
-## Open product decisions
+Each usable increment has an exact source SHA, review and proportionate checks. Core acceptance includes camera invariants, fresh-input dwell, collision sweep/recovery, disconnect/reconnect and deliberate resume. The hardware-connected friend performs live checks; mocks do not satisfy hardware acceptance. Frame time, packet age/rate and visible latency are measured separately. Master E owns sole serialized merging, with Master H reviewing shared input boundaries.
 
-Record answers here or promote durable answers to ADRs before implementation:
+## Remaining validation and decisions
 
-- Exact da Vinci simulator/reference experience being targeted and which qualities matter most.
-- Unity Editor version and render pipeline.
-- Target hardware and operating systems.
-- Robot arm model, degrees of freedom, limits, and expected UART command grammar.
-- Required physical accuracy, latency, frame rate, and visual acceptance criteria.
-- Asset sourcing and licensing strategy.
-- Single-player, training, assessment, telemetry, and hardware-in-the-loop requirements.
+- Verify live packet shape, degree-angle units, serial settings, physical axes/reference point and direction mapping against the connected device. User-confirmed baud is 115200 and XYZ units are mm; roll is unavailable.
+- Agree exact baseline facade signatures, units/axes, freshness thresholds, synthetic knife twist and immutable fixtures with H before dependent writers start.
+- Tune reachable targets, collision margins/hysteresis and exercise tolerances against observed behavior and noise.
+- Record actual browser/OS performance and hardware evidence. Future hosted delivery needs an existing authorized destination; it is not the current localhost delivery gate.
+
+Engine selection and mode priority are settled. ADR [0003](adr/0003-browser-training-launch.md) records the architectural transition.

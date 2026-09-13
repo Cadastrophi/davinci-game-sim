@@ -4,7 +4,7 @@ GitHub issues and pull requests in `origin` are the authoritative coordination s
 
 | Issue | Human owner | Agent | Branch | Expected paths / interfaces | Status | Last sync (UTC) |
 | --- | --- | --- | --- | --- | --- | --- |
-| Bootstrap | Justin | Codex | `main` (initialization only) | Governance, docs, local skills, reference submodule | Merged by initial repository creation | 2026-09-13 |
+| [#3](https://github.com/Cadastrophi/davinci-game-sim/issues/3) | Justin / `Cadastrophi` | Master E D0 worker | `Cadastrophi_reconcile-web-intent` | Shared product docs, intent/active mirrors, ADR 0003, launch run status; original launch package read-only | review | 2026-09-13 |
 
 Status values: `claimed`, `in progress`, `blocked`, `review`, or `merged`.
 
