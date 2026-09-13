@@ -18,6 +18,7 @@ import { CAMERA_HOME, CAMERA_FORWARD } from '../contracts';
 import type { SceneFacade, SceneSnapshot } from '../contracts';
 import { createEnvironment, material } from './environment';
 import { applyPose, createInstrument } from './instrument';
+import { createIncisionPatch } from './incision';
 
 export function createScene(canvas: HTMLCanvasElement): SceneFacade {
   return createSceneRuntime(new Engine(canvas, true)).facade;
@@ -46,6 +47,8 @@ export function createSceneRuntime(engine: AbstractEngine) {
   shadows.normalBias = 0.04;
   shadows.setDarkness(0.2);
   for (const mesh of createEnvironment(scene)) shadows.addShadowCaster(mesh);
+  const incision = createIncisionPatch(scene);
+  for (const mesh of incision.meshes) shadows.addShadowCaster(mesh);
   const instrument = createInstrument(scene, false);
   for (const mesh of instrument.meshes) shadows.addShadowCaster(mesh);
   const ghost = createInstrument(scene, true);
@@ -97,6 +100,7 @@ export function createSceneRuntime(engine: AbstractEngine) {
   const facade: SceneFacade = {
     render(snapshot) {
       if (disposed) return;
+      incision.update(snapshot.exercise.mode === 'incision' ? snapshot.incision : null);
       camera.position.copyFromFloats(...snapshot.cameraPositionMm);
       applyPose(instrument.root, snapshot.applied.pose);
       ghost.root.setEnabled(snapshot.applied.mismatch);
