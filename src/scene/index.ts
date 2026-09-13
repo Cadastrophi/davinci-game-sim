@@ -19,6 +19,7 @@ import type { SceneFacade, SceneSnapshot } from '../contracts';
 import { createEnvironment, material } from './environment';
 import { applyPose, createInstrument } from './instrument';
 import { createIncisionPatch } from './incision';
+import { createFirstPersonNavigation, usesFirstPersonNavigation } from './first-person-navigation';
 
 export function createScene(canvas: HTMLCanvasElement): SceneFacade {
   return createSceneRuntime(new Engine(canvas, true)).facade;
@@ -46,13 +47,15 @@ export function createSceneRuntime(engine: AbstractEngine) {
   shadows.bias = 0.001;
   shadows.normalBias = 0.04;
   shadows.setDarkness(0.2);
-  for (const mesh of createEnvironment(scene)) shadows.addShadowCaster(mesh);
+  const environment = createEnvironment(scene);
+  for (const mesh of environment) shadows.addShadowCaster(mesh);
   const incision = createIncisionPatch(scene);
   for (const mesh of incision.meshes) shadows.addShadowCaster(mesh);
   const instrument = createInstrument(scene, false);
   for (const mesh of instrument.meshes) shadows.addShadowCaster(mesh);
   const ghost = createInstrument(scene, true);
   ghost.root.setEnabled(false);
+  const firstPerson = createFirstPersonNavigation(scene, camera);
 
   const mint = material(scene, 'target-mint', '#80f7c9');
   mint.emissiveColor = new Color3(0.18, 0.47, 0.35);
@@ -102,9 +105,13 @@ export function createSceneRuntime(engine: AbstractEngine) {
       if (disposed) return;
       incision.update(snapshot.exercise.mode === 'incision' ? snapshot.incision : null);
       camera.position.copyFromFloats(...snapshot.cameraPositionMm);
+      const firstPersonMode = usesFirstPersonNavigation(snapshot.exercise.mode);
+      for (const mesh of environment) mesh.setEnabled(!firstPersonMode);
+      firstPerson.update(snapshot.exercise.mode, snapshot.applied.pose);
       applyPose(instrument.root, snapshot.applied.pose);
-      ghost.root.setEnabled(snapshot.applied.mismatch);
-      if (snapshot.applied.mismatch) applyPose(ghost.root, snapshot.applied.requestedPose);
+      instrument.root.setEnabled(!firstPersonMode);
+      ghost.root.setEnabled(!firstPersonMode && snapshot.applied.mismatch);
+      if (!firstPersonMode && snapshot.applied.mismatch) applyPose(ghost.root, snapshot.applied.requestedPose);
       const currentTarget = snapshot.exercise.target;
       const visibleTarget = currentTarget !== null && snapshot.exercise.phase !== 'completed';
       target.setEnabled(visibleTarget);

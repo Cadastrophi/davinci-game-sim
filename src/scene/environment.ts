@@ -24,17 +24,21 @@ export function tissueHeight(x: number, z: number): number {
 }
 
 export function createEnvironment(scene: Scene): readonly Mesh[] {
+  const environment: Mesh[] = [];
   const floor = CreateGround('surgical-drape', { width: 650, height: 650 }, scene);
   floor.position.y = -9;
   floor.material = material(scene, 'deep-teal-drape', '#142d32', 9);
   floor.receiveShadows = true;
+  environment.push(floor);
   const tray = CreateBox('instrument-tray', { width: 165, height: 3, depth: 116 }, scene);
   tray.position.y = -5;
   tray.material = material(scene, 'satin-titanium', '#5c7178', 100);
   tray.receiveShadows = true;
+  environment.push(tray);
   const inset = CreateBox('tray-inset', { width: 151, height: 1, depth: 101 }, scene);
   inset.position.y = -3;
   inset.material = material(scene, 'tray-inset-material', '#273f43', 85);
+  environment.push(inset);
   const rimPath: Vector3[] = [];
   for (let corner = 0; corner < 4; corner++) {
     const angle = corner * Math.PI / 2;
@@ -48,6 +52,7 @@ export function createEnvironment(scene: Scene): readonly Mesh[] {
   rimPath.push(rimPath[0]!.clone());
   const rim = CreateTube('rolled-tray-rim', { path: rimPath, radius: 1.8, tessellation: 10 }, scene);
   rim.material = tray.material;
+  environment.push(rim);
 
   const positions: number[] = [0, tissueHeight(0, 0), 0];
   const colors: number[] = [0.8, 0.47, 0.43, 1];
@@ -95,9 +100,9 @@ export function createEnvironment(scene: Scene): readonly Mesh[] {
   tissueMaterial.backFaceCulling = false;
   tissue.material = tissueMaterial;
   tissue.receiveShadows = true;
+  environment.push(tissue);
 
   const vesselMaterial = material(scene, 'vessel-rose', '#8e3544', 80);
-  const vessels: Mesh[] = [];
   const vessel = (name: string, points: readonly [number, number][], radius: number) => {
     const path: Vector3[] = [];
     for (let p = 0; p < points.length - 1; p++) {
@@ -114,7 +119,7 @@ export function createEnvironment(scene: Scene): readonly Mesh[] {
     path.push(new Vector3(last[0], tissueHeight(...last) + 0.12, last[1]));
     const mesh = CreateTube(name, { path, radius, tessellation: 8, cap: Mesh.CAP_ALL }, scene);
     mesh.material = vesselMaterial;
-    vessels.push(mesh);
+    environment.push(mesh);
   };
   vessel('vessel-trunk', [[-58, 22], [-39, 18], [-21, 8], [1, 4], [23, -9], [52, -21]], 0.72);
   vessel('vessel-left-branch', [[-25, 10], [-35, -3], [-42, -16], [-49, -27]], 0.47);
@@ -125,6 +130,7 @@ export function createEnvironment(scene: Scene): readonly Mesh[] {
     const tick = CreateBox(`tray-tick-${i}`, { width: 0.35, height: 0.12, depth: i % 2 ? 2 : 4 }, scene);
     tick.position.set(i * 10, -0.1, 53);
     tick.material = inset.material;
+    environment.push(tick);
   }
-  return [tray, rim, tissue, ...vessels];
+  return environment;
 }

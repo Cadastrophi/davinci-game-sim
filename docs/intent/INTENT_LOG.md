@@ -66,3 +66,12 @@ User requests Shift held to recenter the controller only, freezing camera and ap
 - **Out of scope:** UART framing/protocol changes, serial transmit, gameplay or scene redesign, and changes to #32's Shift-held recenter semantics.
 - **Constraints:** Preserve the transport-independent input boundary and integrate after merged PR #32. A stale or missing sample must still prevent unsafe rebase/resume.
 - **Acceptance evidence:** Deterministic red/green integration tests for center/reset and rapid pause/resume, formatter/UI evidence for live raw values, full tests/typecheck/build, and browser verification.
+
+## 2026-09-13 — Single-arm first-person navigation presentation (#37)
+
+- **Requested by:** Justin.
+- **Outcome:** Replace the table/slab presentation in direction alignment, obstacle navigation, and camera/navigation with an original first-person anatomical cavity and one moving side-mounted surgical instrument.
+- **In scope:** Static generated navigation backdrop, camera-space procedural single-arm viewmodel, mode-specific scene switching, existing interactive 3D targets/protected bounding boxes, focused scene tests, and visual provenance.
+- **Out of scope:** Input/calibration contract changes, UI redesign, serial framing, new scoring or collision rules, arbitrary anatomy simulation, and changes to the incision table/slab or cutting geometry.
+- **Constraints:** WASD/QE and arrow-key input continues through the existing manual source and input facade used by serial-driven simulation. The first-person arm is presentation-only; applied world pose remains the authority for scoring and collision.
+- **Acceptance evidence:** Navigation modes enable the cavity/arm and hide the table instrument; arm movement follows applied pose; incision restores the table/slab; focused and full tests, typecheck/build, and browser walkthrough pass.
