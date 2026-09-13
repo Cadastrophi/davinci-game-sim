@@ -63,3 +63,8 @@ The five core modes and input composition passed combined tests/build and indepe
 - **Constraints:** Preserve the existing contents and release state of both `dev` and `prod`; apply this maintenance change to each without promoting unrelated dev-only commits.
 - **Acceptance evidence:** Neither branch tracks `.agents/skills/` or `docs/skills/INSTALLED_SKILLS.md`; current agent guidance points to device-level skills; repository-local skill paths are ignored.
 - **Supersedes:** The repository-local skill portion of the 2026-09-13 repository governance bootstrap entry. That earlier entry remains historical evidence.
+
+
+## 2026-09-13 — Add production CI without feature promotion
+
+Justin requested automated tests/builds for dev and prod while holding application promotion for unavailable hardware verification. Add the same pinned GitHub Actions workflow to prod: lockfile install, existing tests, typecheck/build, and downloadable dist artifacts. No runtime, dependency, submodule or deployment changes. Pitch and first-person changes remain deferred. New behavioral tests are not approved.
