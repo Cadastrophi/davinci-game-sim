@@ -31,7 +31,7 @@ export function createReplayDriver(input: Sink, events: readonly ReplayEvent[], 
       throw new Error('invalid-replay-fixture');
     }
     previous = event.atMs;
-    return { ...event, positionMm: [...event.positionMm] as Vec3 };
+    return { ...event, positionMm: [event.positionMm[0], event.positionMm[1], event.positionMm[2]] as Vec3 };
   });
   let epoch = now();
   let cursor = 0;

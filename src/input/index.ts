@@ -129,7 +129,7 @@ export function createInputFacade(options: InputOptions = {}): InputFacade {
       virtualConnected = false;
       mapping.setConnected(false);
       mapping.pause('disposed');
-      disposal = transport.dispose();
+      disposal = transport.dispose().finally(() => { disposal = null; });
       return disposal;
     },
   };
