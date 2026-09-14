@@ -12,6 +12,9 @@ Choose a route based on what you need. Historical launch records preserve delive
 ## Understand the product
 
 - [Project intent](PROJECT_INTENT.md) — accepted direction, boundaries and remaining validation.
+- [Preserved pose-trainer research](plans/POSE_TRAINER_PLAN.md) — archived planning, hardware clarifications and proposed future work; not current implementation authority.
+- [Preserved research synthesis](plans/RESEARCH_SYNTHESIS.md) — archived research reconciliation and delivery planning.
+- [Preserved research references](references/WEB_POSE_TRAINER_RESEARCH.md) — platform comparison, kinematics audit and supporting research captured before the current browser implementation.
 - [Domain language](../CONTEXT.md) — telemetry, requested/applied pose, rebase and measurement vocabulary.
 - [Accepted specification](launch/SPEC.md) — required behavior and acceptance evidence.
 - [Architecture decisions](adr/README.md) — durable choices, including the browser-stack transition.
