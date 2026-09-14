@@ -4,6 +4,9 @@ The documentation is the shared memory for humans and agents. Update it in the s
 
 ## Product and domain
 
+- `plans/POSE_TRAINER_PLAN.md` — current design interview, browser preference, proposed drills, and hardware-dependent milestones; read before planning the trainer.
+- `references/WEB_POSE_TRAINER_RESEARCH.md` — primary-source platform comparison and reference-access limitations.
+- `references/ROBOT_KINEMATICS_AUDIT.md` — measured-from-source DH model, incomplete limits, Jacobian defects, and UART contract.
 - `PROJECT_INTENT.md` — goal, boundaries, success signals, and unresolved decisions.
 - `../CONTEXT.md` — stable domain language and architectural boundary.
 - `intent/INTENT_LOG.md` — append-only record of requested outcomes and interpretation.

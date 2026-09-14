@@ -4,11 +4,11 @@
 
 Two collaborators are building at a hackathon using agents concurrently and do not intend to operate Git flows manually. The repository must make intent, ownership, coordination, branching, review, and merging explicit enough that agents can perform those mechanics safely.
 
-The product direction is a Unity simulator with substantially stronger graphics and environment quality than the existing simple prototype, taking experiential inspiration from a da Vinci simulator/game environment.
+The updated product direction is a position-and-orientation trainer for a physical seven-DOF robot controller. It should provide free practice and several short exercises with stronger graphics and environment quality than the existing prototype, taking inspiration from a da Vinci simulator and Aimlabs. The user prefers a web application; Unity is a historical assumption being reconsidered.
 
 ## Current phase
 
-Governance and documentation bootstrap only. Do not implement the game until explicitly requested.
+Research and design interview. See `plans/POSE_TRAINER_PLAN.md` for confirmed intent, proposals and open hardware decisions. Do not implement the game until explicitly requested.
 
 ## Goals
 
