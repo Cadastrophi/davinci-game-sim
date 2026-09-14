@@ -25,6 +25,7 @@ Choose a route based on what you need. Historical launch records preserve delive
 - [Hardware handoff](hardware/INPUT_HANDOFF.md) — serial, mapping and source composition.
 - [Component handoffs](handoffs/) — scoped ownership, APIs, validation and delivery limitations.
 - [Intent log](intent/INTENT_LOG.md) — append-only record of requested outcomes.
+- [Local preservation record](intent/2026-09-14-local-preservation.md) — archival scope, excluded FOC checkout, and recovery-branch handoff for the retired Desktop checkout.
 - [Handoff template](coordination/HANDOFF_TEMPLATE.md) — context to preserve when ownership changes.
 
 ## Recover the build history

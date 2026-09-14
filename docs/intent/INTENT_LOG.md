@@ -134,3 +134,12 @@ Justin requested automated tests/builds for dev and prod while holding applicati
 ## 2026-09-13 — Validate configured branches and preserve promotion ancestry
 
 Both CI PRs and post-merge push checks passed; dev is GitHub default and dev/prod have required PR/CI protections. Reconcile the CI-only prod commit into dev using a merge commit so future release promotion preserves ancestry. Application code remains unchanged. Keep main intact for the user's requested readiness update; hardware verification blocks release promotion, not redundant-branch retirement. Final evidence: docs/workflows/MERGE_READINESS.md.
+
+## 2026-09-14 — Preserve useful local work before Desktop checkout retirement
+
+- **Requested by:** Justin.
+- **Outcome:** Create a remote preservation branch for useful local research and preserve local-only Git history in recoverable remote refs before the Desktop checkout is deleted.
+- **In scope:** Uncommitted pose-trainer research and planning, local-only application branch history, detached review snapshots, and a clear preservation record in the documentation index.
+- **Explicitly excluded:** The untracked `references/foc-motor-test/` checkout and its edits; generated `node_modules/`, `dist/`, and `.DS_Store` files.
+- **Constraints:** Base the preservation branch on current `origin/dev`; do not change application behavior; do not treat FOC motor-test material as part of the browser trainer; retain the distinction between pushed history, local-only refs, and uncommitted work.
+- **Acceptance evidence:** A remote preservation branch and any required recovery refs are pushed; documentation records the source worktrees, preserved material, excluded material, remote SHA(s), and validation limitations.
