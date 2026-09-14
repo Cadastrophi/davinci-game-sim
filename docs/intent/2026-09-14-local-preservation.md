@@ -23,7 +23,7 @@ The preservation branch contains one coherent tree based on `origin/dev`. Separa
 
 The preservation branch was pushed successfully:
 
-- `Cadastrophi_local-preservation-2026-09-14` at final tip `6c55e06` (the preservation content began at `1cffc56`).
+- `Cadastrophi_local-preservation-2026-09-14` contains the substantive preservation content from `1cffc56`, followed by documentation-only evidence corrections.
 - It is based on `origin/dev` at `3694eac` and contains documentation plus the archived pose-trainer research; application behavior is unchanged.
 - `npm ci` completed successfully, `npm test` passed with 19 files and 180 tests, and `npm run build` passed.
 - `git diff --check origin/dev...HEAD` passed.
